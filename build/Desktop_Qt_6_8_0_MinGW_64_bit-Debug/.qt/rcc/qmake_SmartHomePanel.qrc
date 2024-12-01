@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/SmartHomePanel">
+    <file alias="qmldir">C:/Users/niemi/Documents/repos/SmartHomePanel/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/SmartHomePanel/qmldir</file>
+  </qresource>
+</RCC>
+

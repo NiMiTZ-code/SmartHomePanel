@@ -1,0 +1,5 @@
+module SmartHomePanel
+typeinfo appSmartHomePanel.qmltypes
+prefer :/qt/qml/SmartHomePanel/
+Main 1.0 Main.qml
+
