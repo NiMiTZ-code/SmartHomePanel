@@ -17,6 +17,12 @@ qt_add_qml_module(appSmartHomePanel
     VERSION 1.0
     QML_FILES
         Main.qml
+        SOURCES device.h device.cpp
+        SOURCES sensor.h sensor.cpp
+        SOURCES actuator.h actuator.cpp
+        SOURCES lamp.h lamp.cpp
+        SOURCES thermostat.h thermostat.cpp
+        SOURCES weatherstation.h weatherstation.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
