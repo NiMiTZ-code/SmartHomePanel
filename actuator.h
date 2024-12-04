@@ -7,7 +7,7 @@ class Actuator : public Device
 {
 public:
     explicit Actuator(QObject *parent = nullptr);
-    virtual void toggle();
+    virtual void toggle() = 0;
 private:
 
 };

@@ -10,6 +10,7 @@ class DeviceController : public QObject
     Q_OBJECT
 private:
     QList<Device> m_devices;
+    //add devices, ręczne dodawanie po ip w okienku dialogowym?
 public:
     explicit DeviceController(QObject *parent = nullptr);
 

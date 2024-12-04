@@ -8,6 +8,10 @@ class Lamp : public Actuator
 public:
     explicit Lamp(QObject *parent = nullptr);
     void toggle() override;
+private slots:
+    //onToggle z UI
+signals:
+    //statusChange / toggle
 };
 
 #endif // LAMP_H
