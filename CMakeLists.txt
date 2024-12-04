@@ -23,6 +23,7 @@ QML_FILES Main.qml
 SOURCES devicecontroller.h devicecontroller.cpp
 SOURCES rgblamp.h rgblamp.cpp
 SOURCES
+QML_FILES SmartHomePanel.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

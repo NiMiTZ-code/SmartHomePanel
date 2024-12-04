@@ -23,13 +23,16 @@ public:
         return name;
     }
     void setStatus(DeviceStatus st);
-    void setCommand(QByteArray command);
+    void setCommand(QByteArray comm);
+    QByteArray getCurrentCommand() const{
+        return command;
+    }
     void sendCommand();
 private:
     QString name;
     DeviceStatus status;
     QHostAddress deviceIP;
-    QByteArray command[2]; //16-bit
+    QByteArray command;
 
 signals:
 };
