@@ -22,6 +22,7 @@ public:
     QString getName(){
         return name;
     }
+    void setDeviceName(QString name);
     void setStatus(DeviceStatus st);
     void setCommand(QByteArray comm);
     QByteArray getCurrentCommand() const{
