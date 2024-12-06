@@ -6,16 +6,16 @@ Lamp::Lamp(QObject *parent)
 
 void Lamp::toggle()
 {
-    QByteArray comm(1,0); //1Bajt
+    QByteArray temp_command(1,0); //1Bajt
     if(getStatus()== DeviceStatus::ON){
-        comm[0] = 0x00;
-        setCommand(comm);
+        temp_command[0] = 0x00;
+        setCommand(temp_command);
         //signal to send command
         setStatus(DeviceStatus::OFF);
 
     } else{
-        comm[0] = 0x01;
-        setCommand(comm);
+        temp_command[0] = 0x01;
+        setCommand(temp_command);
         //signal to send command
         setStatus(DeviceStatus::ON);
     }
