@@ -7,9 +7,9 @@ class Sensor : public Device
 {
 public:
     explicit Sensor(QObject *parent = nullptr);
-    double readValue();
+    virtual void readValue() = 0;
 private:
-    double readingValue;
+    float readingValue;
 };
 
 #endif // SENSOR_H

@@ -2,19 +2,22 @@
 #define THERMOSTAT_H
 
 #include "actuator.h"
-
-class Thermostat : public Actuator
+#include "sensor.h"
+class Thermostat : public Actuator, Sensor
 {
 private:
-    double temperatueSetting;
-    double temperatureReading;
+    float temperatureSetting;
+    float temperatureReading;
 public:
     explicit Thermostat(QObject *parent = nullptr);
-    void readTemperature(); //to fire network command of temperature retrieval
-    void setTemperatureToAchieve(double temp);
+    void readValue() override; //to fire network command of temperature retrieval
+    void setTemperatureSetting(float temp);
     void setTemperatureReading(); //only if needed, if not, erase
-    double getTemperatureReading;
-    double getTemperatureSetting();
+    float getTemperatureReading;
+    float getTemperatureSetting(){
+        return temperatureSetting;
+    }
+    void chngTempSetting();
     void toggle() override;
 
 };

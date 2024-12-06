@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "rgblamp.h"
+#include "thermostat.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +25,11 @@ int main(int argc, char *argv[])
     lampa.chngColor();
     lampa.toggle();
 
+    Thermostat therm;
+    therm.setTemperatureSetting(25);
+    therm.chngTempSetting();
+    therm.toggle();
+    therm.toggle();
 
     return app.exec();
 }
