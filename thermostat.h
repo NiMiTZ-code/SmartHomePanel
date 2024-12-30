@@ -7,7 +7,7 @@ class Thermostat : public Actuator, Sensor
 {
 private:
     float temperatureSetting;
-    float temperatureReading;
+    float temperatureReading; //->zamiana na readingValue z Sensor
 public:
     explicit Thermostat(QObject *parent = nullptr);
     void readValue() override; //to fire network command of temperature retrieval

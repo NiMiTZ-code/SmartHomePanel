@@ -3,6 +3,7 @@
 #include "rgblamp.h"
 #include "thermostat.h"
 
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -14,7 +15,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("SmartHomePanel", "Main");
+    engine.loadFromModule("SmartHomeGUI","Main");
 
     //TESTY
     RGBLamp lampa;
