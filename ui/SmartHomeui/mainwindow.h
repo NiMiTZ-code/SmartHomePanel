@@ -30,11 +30,10 @@ public:
 public slots:
     void zegar();
     void fetchWeatherData();
-    //void handleWeatherData(QNetworkReply *reply);
 
 private:
     Ui::MainWindow *ui;
-    QTimer *timer;
+    QTimer *zegarTimer;
     QTimer *weatherTimer;
     QNetworkAccessManager *networkManager;
     void fetchWeatherIcon(const QString &iconCode);

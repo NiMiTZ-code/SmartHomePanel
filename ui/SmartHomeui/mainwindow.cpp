@@ -9,9 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // Timer to update the time every second
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &MainWindow::zegar);
-    timer->start(1000);
+    zegarTimer = new QTimer(this);
+    connect(zegarTimer, &QTimer::timeout, this, &MainWindow::zegar);
+    zegarTimer->start(1000);
 
     // Timer to update the weather every 60 seconds (1 minute)
     weatherTimer = new QTimer(this);
