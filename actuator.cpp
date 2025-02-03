@@ -10,8 +10,6 @@ Actuator::Actuator(const QString &name, const QHostAddress &ip, QObject *parent)
     setDeviceName(name);
     setDeviceIP(ip);
     setStatus(DeviceStatus::OFF);
-
-
 }
 
 void Actuator::sendCommand()

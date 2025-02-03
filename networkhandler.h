@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QUdpSocket>
-#include <QMap>
+#include <QList>
 
 #include "device.h"
 
@@ -12,9 +12,10 @@ class NetworkHandler: public QObject
     Q_OBJECT
 private:
     QUdpSocket *m_udpSocket;
+    QList<Device*> m_devices;
     static NetworkHandler* m_instance;
     static const int TIMEOUT_MS = 2000;
-    static const quint16 PORT = 7777;
+    static const quint16 PORT = 32234;
 
 public:
     explicit NetworkHandler(QObject *parent = nullptr);

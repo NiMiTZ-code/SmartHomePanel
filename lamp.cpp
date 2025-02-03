@@ -14,12 +14,14 @@ void Lamp::toggle()
         setCommand(temp_command);
         sendCommand();
         setStatus(DeviceStatus::OFF);
+        emit lampToggled(false);
 
     } else{
         temp_command[0] = 0x01;
         setCommand(temp_command);
         sendCommand();
         setStatus(DeviceStatus::ON);
+        emit lampToggled(true);
     }
 }
 

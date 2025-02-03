@@ -11,7 +11,6 @@ public:
     Actuator(const QString& name, const QHostAddress& ip, QObject *parent = nullptr);
     virtual void toggle() = 0;
     void sendCommand() override;
-private:
 
 };
 

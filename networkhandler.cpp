@@ -1,4 +1,5 @@
 #include "networkhandler.h"
+#include <qdebug.h>
 
 NetworkHandler* NetworkHandler::m_instance = nullptr;
 
@@ -23,6 +24,7 @@ NetworkHandler* NetworkHandler::getInstance()
 }
 void NetworkHandler::registerDevice(Device* device, const QHostAddress &address)
 {
+    m_devices.append(device);
     connect(device, &Device::sendCommandSignal,
             this, &NetworkHandler::sendCommandToDevice);
 }
@@ -30,6 +32,8 @@ void NetworkHandler::sendCommandToDevice(const QByteArray& command, const QHostA
 {
     m_udpSocket->writeDatagram(command, ip, PORT);
     //eventually qDebug() << "Command sent to " << ip.toString(); etc
+    qDebug() << "Command sent to " << ip.toString();
+    qDebug() << "Command:" << command;
 }
 
 void NetworkHandler::handleResponse()
@@ -43,6 +47,11 @@ void NetworkHandler::handleResponse()
         m_udpSocket->readDatagram(datagram.data(), datagram.size(),
                                   &senderIP, &senderPort);
 
-        //here, place for further processing of the response
+        for(auto device : m_devices) {
+            if(device->getDeviceIP() == senderIP) {
+                device->handleResponse(datagram);
+            break;
+            }
+        }
     }
 }

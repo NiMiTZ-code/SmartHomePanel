@@ -48,11 +48,10 @@ void Device::sendCommand()
 
 void Device::updateStatus()
 {
-    // Maybe send a status request command to the device
+
 }
 
-void Device::handleResponse(const QByteArray& response)
+void Device::handleResponse(const QByteArray &response)
 {
 
-    // Process the response from the device
 }
