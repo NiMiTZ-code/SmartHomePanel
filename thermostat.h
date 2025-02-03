@@ -1,26 +1,38 @@
 #ifndef THERMOSTAT_H
 #define THERMOSTAT_H
 
-#include "actuator.h"
 #include "sensor.h"
-class Thermostat : public Actuator, Sensor
+class Thermostat : public Sensor
 {
     Q_OBJECT
 private:
     float temperatureSetting;
-    float temperatureReading; //->zamiana na readingValue z Sensor
+    float temperatureReading;
+
+    void performAction();
 public:
     explicit Thermostat(QObject *parent = nullptr);
+
     void readValue() override; //to fire network command of temperature retrieval
     void setTemperatureSetting(float temp);
-    void setTemperatureReading(); //only if needed, if not, erase
-    float getTemperatureReading;
+    void setTemperatureReading(float temp);
+
+    float getTemperatureReading(){
+        return temperatureReading;
+    }
     float getTemperatureSetting(){
         return temperatureSetting;
     }
     void chngTempSetting();
-    void toggle() override;
+
     void sendCommand() override;
+public slots:
+    void handleResponse(const QByteArray& response) override;
+signals:
+    void temperatureChanged(float newTemperature);
+    void temperatureSettingChanged(float newTemperatureSetting); //send to actuator like heater or AC
+    void temperatureReadingChanged(float newTemperatureReading);
+    void temperatureError(const QString& errorMessage);
 
 };
 

@@ -35,8 +35,6 @@ int main(int argc, char *argv[])
     Thermostat therm;
     therm.setTemperatureSetting(25);
     therm.chngTempSetting();
-    therm.toggle();
-    therm.toggle();
     return a.exec();
 
 }

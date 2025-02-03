@@ -14,6 +14,7 @@ NetworkHandler::~NetworkHandler()
 {
     m_udpSocket->close();
     delete m_udpSocket;
+    //m_instance = nullptr; //check if valid later
 }
 NetworkHandler* NetworkHandler::getInstance()
 {
@@ -22,7 +23,7 @@ NetworkHandler* NetworkHandler::getInstance()
     }
     return m_instance;
 }
-void NetworkHandler::registerDevice(Device* device, const QHostAddress &address)
+void NetworkHandler::registerDevice(Device* device)
 {
     m_devices.append(device);
     connect(device, &Device::sendCommandSignal,
