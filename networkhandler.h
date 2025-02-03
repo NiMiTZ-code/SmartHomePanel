@@ -21,7 +21,7 @@ public:
     explicit NetworkHandler(QObject *parent = nullptr);
     ~NetworkHandler();
 
-    void registerDevice(Device* device, const QHostAddress &address);
+    void registerDevice(Device* device);
     static NetworkHandler* getInstance(); //singletgon
 
 public slots:

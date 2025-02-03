@@ -11,11 +11,9 @@ int main(int argc, char *argv[])
     w.show();
     //TESTY
     NetworkHandler* networkHandler = new NetworkHandler();
-    Device* device = new Device();
     RGBLamp* lampa = new RGBLamp();
     lampa->setDeviceIP(QHostAddress("127.0.0.1"));
-    networkHandler->registerDevice(lampa, QHostAddress("127.0.0.1"));
-    lampa->getBrightness();
+    networkHandler->registerDevice(lampa);
     lampa->setBrightness(255);
     lampa->chngBrightness();
     lampa->mixColors(255,128,64);
