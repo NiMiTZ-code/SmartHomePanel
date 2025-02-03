@@ -12,6 +12,8 @@ public:
     void sendCommand() override;
 private:
     float readingValue;
+public slots:
+    void handleResponse(const QByteArray& response) override;
 };
 
 #endif // SENSOR_H
