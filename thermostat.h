@@ -10,6 +10,7 @@ private:
     float temperatureReading;
 
     void performAction();
+    //agregate heater and AC?
 public:
     explicit Thermostat(QObject *parent = nullptr);
 
@@ -33,6 +34,9 @@ signals:
     void temperatureSettingChanged(float newTemperatureSetting); //send to actuator like heater or AC
     void temperatureReadingChanged(float newTemperatureReading);
     void temperatureError(const QString& errorMessage);
+    void turnAC_ON();
+    void turnHeater_ON();
+    void turnHVACs_OFF();
 
 };
 
