@@ -32,9 +32,12 @@ int main(int argc, char *argv[])
     lampa->chngColor();
     lampa->sendCommand();
 
-    Thermostat therm;
-    therm.setTemperatureSetting(25);
-    therm.chngTempSetting();
+    //Thermostat therm;
+    //therm.setTemperatureSetting(25);
+    //therm.chngTempSetting();
+    Thermostat* therm = new Thermostat();
+    therm->setTemperatureSetting(25);
+    therm->chngTempSetting();
     return a.exec();
 
 }
