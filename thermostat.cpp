@@ -52,10 +52,13 @@ void Thermostat::performAction()
 {
     if(getTemperatureReading() > getTemperatureSetting()){
         //turn on AC
+        emit turnAC_ON();
     }else if(getTemperatureReading() < getTemperatureSetting()){
         //turn on heater
+        emit turnHeater_ON();
     }else{
-        //turn device off
+        //turn devices off
+        emit turnHVACs_OFF();
     }
 }
 

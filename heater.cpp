@@ -1,14 +1,14 @@
-#include "lamp.h"
+#include "heater.h"
 
-Lamp::Lamp(QObject *parent)
+Heater::Heater(QObject *parent)
     : Actuator{parent}
 {
-    setDeviceName("Lamp");
+    setDeviceName("Heater");
     setStatus(DeviceStatus::OFF);
     setCommand(QByteArray(1,0));
-}
 
-void Lamp::toggle()
+}
+void Heater::toggle()
 {
     QByteArray temp_command(1,0); //1Bajt
     if(getStatus()== DeviceStatus::ON){
@@ -16,25 +16,22 @@ void Lamp::toggle()
         setCommand(temp_command);
         sendCommand();
         setStatus(DeviceStatus::OFF);
-        emit lampToggled(false);
+        emit heaterToggled(false);
 
     } else{
         temp_command[0] = 0x01;
         setCommand(temp_command);
         sendCommand();
         setStatus(DeviceStatus::ON);
-        emit lampToggled(true);
+        emit heaterToggled(true);
     }
 }
 
-void Lamp::sendCommand()
+void Heater::sendCommand()
 {
     emit sendCommandSignal(getCurrentCommand(), getDeviceIP());
 }
-
-void Lamp::onUIToggle()
+void Heater::onUIToggle()
 {
     toggle();
 }
-
-

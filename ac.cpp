@@ -1,14 +1,14 @@
-#include "lamp.h"
+#include "ac.h"
 
-Lamp::Lamp(QObject *parent)
+AC::AC(QObject *parent)
     : Actuator{parent}
 {
-    setDeviceName("Lamp");
+    setDeviceName("A/C");
     setStatus(DeviceStatus::OFF);
     setCommand(QByteArray(1,0));
 }
 
-void Lamp::toggle()
+void AC::toggle()
 {
     QByteArray temp_command(1,0); //1Bajt
     if(getStatus()== DeviceStatus::ON){
@@ -16,25 +16,22 @@ void Lamp::toggle()
         setCommand(temp_command);
         sendCommand();
         setStatus(DeviceStatus::OFF);
-        emit lampToggled(false);
+        emit heaterToggled(false);
 
     } else{
         temp_command[0] = 0x01;
         setCommand(temp_command);
         sendCommand();
         setStatus(DeviceStatus::ON);
-        emit lampToggled(true);
+        emit heaterToggled(true);
     }
 }
-
-void Lamp::sendCommand()
+void AC::sendCommand()
 {
     emit sendCommandSignal(getCurrentCommand(), getDeviceIP());
 }
-
-void Lamp::onUIToggle()
+void AC::onUIToggle()
 {
     toggle();
 }
-
 

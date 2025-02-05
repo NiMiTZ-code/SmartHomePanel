@@ -9,8 +9,10 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ac.cpp \
     actuator.cpp \
     device.cpp \
+    heater.cpp \
     lamp.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -21,8 +23,10 @@ SOURCES += \
     weatherstation.cpp
 
 HEADERS += \
+    ac.h \
     actuator.h \
     device.h \
+    heater.h \
     lamp.h \
     mainwindow.h \
     networkhandler.h \
