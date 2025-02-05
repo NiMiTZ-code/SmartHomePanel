@@ -5,8 +5,8 @@ Thermostat::Thermostat(QObject *parent)
 {
     setStatus(DeviceStatus::OFF);
     temperatureSetting = 20.0F;
-    temperatureReading = 20.0F;
     setDeviceName("Termostat");
+    setCommand(QByteArray(3,0));
 }
 
 
@@ -18,7 +18,7 @@ void Thermostat::readValue()
     read_command[0] = 0xFF;
     read_command[1] = 0x00;
     read_command[2] = 0xFF;
-    Sensor::setCommand(read_command);
+    setCommand(read_command);
     sendCommand();
 }
 
@@ -38,11 +38,11 @@ void Thermostat::setTemperatureReading(float temp)
 
 void Thermostat::chngTempSetting()
 {
-    QByteArray temp_command = Sensor::getCurrentCommand();
+    QByteArray temp_command = getCurrentCommand();
     temp_command[0] = 0x02; //write
     temp_command[1] = getTemperatureSetting();
     temp_command[2] = 0x01; //ON
-    Sensor::setCommand(temp_command);
+    setCommand(temp_command);
     sendCommand();
 
     emit temperatureSettingChanged(getTemperatureSetting());
