@@ -23,7 +23,7 @@ public:
     void chngBrightness(); //used on signal
     void chngColor();
     void toggle() override;
-    void sendCommand () override;
+    void sendCommand() override;
 
 };
 
