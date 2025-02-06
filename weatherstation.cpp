@@ -10,9 +10,7 @@ WeatherStation::WeatherStation(QObject *parent)
 //przenieść do okna
 QString WeatherStation::acquireTime()
 {
-    QTime time = QTime::currentTime();
-    QString time_text = time.toString("hh:mm:ss");
-    return time_text;
+    return QTime::currentTime().toString("hh:mm:ss");
 }
 
 void WeatherStation::readValue(){
@@ -68,40 +66,36 @@ void WeatherStation::fetchWeatherData(){
     QNetworkReply *reply = networkManager->get(request);
     qDebug() << "connecting";
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-    if (reply->error() == QNetworkReply::NoError) {
-        QByteArray response = reply->readAll();
-        qDebug() << "Reading response";
-    // Parse the JSON response
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
-        QJsonObject jsonObj = jsonDoc.object();
-    // Extract data
-        qDebug() << "extracting data";
-        temperature = jsonObj["main"].toObject()["temp"].toDouble();
-        humidity = jsonObj["main"].toObject()["humidity"].toDouble();
-        pressure = jsonObj["main"].toObject()["pressure"].toDouble();
-        QString weatherCondition = jsonObj["weather"].toArray().isEmpty() ? "" : jsonObj["weather"].toArray()[0].toObject()["description"].toString();
-    // Safely access icon code
-        QString currentIconCode = "";
-        QJsonArray weatherArray = jsonObj["weather"].toArray();
-        if (!weatherArray.isEmpty()) {
-            QJsonObject weatherObj = weatherArray.at(0).toObject();
-            currentIconCode = weatherObj["icon"].toString();
-        }
-        // Check if the icon code has changed before requesting the icon again
-        if (currentIconCode != iconCode) {
-            iconCode = currentIconCode;  // Update the last icon code
-            fetchWeatherIcon(iconCode);  // Fetch the new icon
-        // Update the labels with the weather data
-        //    ui->temperatureLabel->setText(QString::number(temperature, 'f', 0) + "°C");
-        //   ui->humidityLabel->setText(QString::number(humidity, 'f', 0) + "%");
-        //    ui->pressureLabel->setText(QString::number(pressure, 'f', 0) + "hPa");
-        }
-    }   else {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray response = reply->readAll();
+            qDebug() << "Reading response";
+
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+            QJsonObject jsonObj = jsonDoc.object();
+
+            temperature = jsonObj["main"].toObject()["temp"].toDouble();
+            humidity = jsonObj["main"].toObject()["humidity"].toDouble();
+            pressure = jsonObj["main"].toObject()["pressure"].toDouble();
+
+            QString currentIconCode = "";
+            QJsonArray weatherArray = jsonObj["weather"].toArray();
+            if (!weatherArray.isEmpty()) {
+                QJsonObject weatherObj = weatherArray.at(0).toObject();
+                currentIconCode = weatherObj["icon"].toString();
+            }
+
+            if (currentIconCode != iconCode) {
+                iconCode = currentIconCode;
+                fetchWeatherIcon(iconCode);
+            }
+
+            emit weatherUpdated(); // 🔥 Emitujemy sygnał po wczytaniu danych
+        } else {
             qDebug() << "Error fetching weather data:" << reply->errorString();
         }
-// Clean up the weather reply object and reset flag
-    isRequestInProgress = false;  // Reset flag
-    reply->deleteLater();
+
+        isRequestInProgress = false;
+        reply->deleteLater();
     });
 }
 

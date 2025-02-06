@@ -42,7 +42,8 @@ private:
     bool isRequestInProgress;
 //    QTimer *weatherTimer;
 
-
+signals:
+    void weatherUpdated();
     //    QTimer *zegarTimer;
     //    QTimer *weatherTimer;
     //    QNetworkAccessManager *networkManager;

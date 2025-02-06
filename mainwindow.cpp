@@ -14,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Timer to update the weather every 60 seconds (1 minute)
     weatherTimer = new QTimer(this);
     connect(weatherTimer, &QTimer::timeout, this, &MainWindow::updateWeatherData);
-    weatherTimer->start(60000);  // Refresh weather every 5 minutes 300000
-    updateWeatherData();  // Initial fetch of weather data
+    weatherTimer->start(300000);  // Refresh weather every 5 minutes 300000
+
+    connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
 }
 
 MainWindow::~MainWindow()
@@ -37,5 +38,4 @@ void MainWindow::setWeatherData(){
 
 void MainWindow::updateWeatherData(){
     weatherStation->readValue();
-    setWeatherData();
 }
