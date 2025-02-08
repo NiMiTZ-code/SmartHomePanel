@@ -69,51 +69,60 @@ void MainWindow::on_addDeviceButton_clicked()
 {
     addDeviceWindow = new newdevicewindow(this);
     int result = addDeviceWindow->exec();
-
     QHostAddress adres;
-    Device newDevice;
-    AC newAC;
+    AC *newAC;
+    Heater *newHeater;
+    RGBLamp *newRGBLamp;
+    Thermostat *newThermostat;
     if(result){
         switch(addDeviceWindow->getDeviceType()){
         case 0:
             //ac
-            //newAC.setDeviceName(addDeviceWindow->getDeviceName());
-            //adres.setAddress(addDeviceWindow->getDeviceIP());
-            //newAC.setDeviceIP(adres);
-            networkHandler->registerDevice(new AC);
+            newAC = new AC;
+            newAC->setDeviceName(addDeviceWindow->getDeviceName());
+            adres.setAddress(addDeviceWindow->getDeviceIP());
+            newAC->setDeviceIP(adres);
+            networkHandler->registerDevice(newAC);
 
             qDebug() << addDeviceWindow->getDeviceName();
             qDebug() << addDeviceWindow->getDeviceIP();
             break;
         case 1:
             //heater
-            networkHandler->registerDevice(new Heater);
+            newHeater = new Heater;
+            newHeater->setDeviceName(addDeviceWindow->getDeviceName());
+            adres.setAddress(addDeviceWindow->getDeviceIP());
+            newHeater->setDeviceIP(adres);
+            networkHandler->registerDevice(newHeater);
 
             qDebug() << addDeviceWindow->getDeviceName();
             qDebug() << addDeviceWindow->getDeviceIP();
             break;
         case 2:
             //RGBLamp
-            networkHandler->registerDevice(new RGBLamp);
+            newRGBLamp = new RGBLamp;
+            newRGBLamp->setDeviceName(addDeviceWindow->getDeviceName());
+            adres.setAddress(addDeviceWindow->getDeviceIP());
+            newRGBLamp->setDeviceIP(adres);
+            networkHandler->registerDevice(newRGBLamp);
 
             qDebug() << addDeviceWindow->getDeviceName();
             qDebug() << addDeviceWindow->getDeviceIP();
             break;
         case 3:
             //Thermostat
-            networkHandler->registerDevice(new Thermostat);
+            newThermostat = new Thermostat;
+            newThermostat->setDeviceName(addDeviceWindow->getDeviceName());
+            adres.setAddress(addDeviceWindow->getDeviceIP());
+            newThermostat->setDeviceIP(adres);
+            networkHandler->registerDevice(newThermostat);
 
             qDebug() << addDeviceWindow->getDeviceName();
             qDebug() << addDeviceWindow->getDeviceIP();
             break;
         }
         listDevices();
-
     }
-
-    //newitem->setText(networkHandler->m_devices[1]->getName());
-    //ui->devicesListWidget->addItem(newitem);
-    //ui->devicesListWidget->update();
     delete addDeviceWindow;
 }
 
@@ -122,7 +131,33 @@ void MainWindow::listDevices(){
     QList<Device*> devices = networkHandler->getDevices(); //wskazniki
     for(Device* device: devices){
         item->setText(device->getName());
+        //problem ze wszystkie się nazywają tak samo więc musiało by być jakieś oznaczenie typu?
+        //if(device->getName()=="A/C"){
+        //    QString status;
+        //    switch(device->getStatus()){
+        //    case DeviceStatus::ON:
+        //        ui->acStatusLabel->setText("ON");
+        //        break;
+        //    case DeviceStatus::OFF:
+        //        ui->acStatusLabel->setText("OFF");
+        //        break;
+        //    case DeviceStatus::ERROR:
+        //        ui->acStatusLabel->setText("ERROR");
+        //        break;
+        //    }
+        //}
         ui->devicesListWidget->addItem(item);
     }
     ui->devicesListWidget->update();
 }
+
+void MainWindow::on_acOnOffButton_clicked() {
+
+}
+
+
+void MainWindow::on_devicesListWidget_itemClicked(QListWidgetItem *item)
+{
+   // ui->deviceNameLabel->setText(item.) // tutaj jakoś by tzeba było adres przekazać
+}
+

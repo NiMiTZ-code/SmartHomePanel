@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "networkhandler.h"
 #include "newdevicewindow.h"
+#include "qlistwidget.h"
 #include "weatherstation.h"
 //#include <QTimer>
 //#include <QDateTime>
@@ -49,5 +50,7 @@ protected:
 
 private slots:
     void on_addDeviceButton_clicked();
+    void on_acOnOffButton_clicked();
+    void on_devicesListWidget_itemClicked(QListWidgetItem *item);
 };
 #endif // MAINWINDOW_H
