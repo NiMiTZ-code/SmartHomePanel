@@ -205,7 +205,7 @@ void MainWindow::updateDeviceInfo()
 
         QString deviceInfo = QString("Name: %1\nType: %2\nStatus: %3\nIP: %4")
                                  .arg(currentDevice->getName())
-                                 .arg(typeid(*currentDevice).name())
+                                 .arg(QString(typeid(*currentDevice).name()).remove("class ").remove("struct "))
                                  .arg(statusText)
                                  .arg(currentDevice->getDeviceIP().toString());
 
