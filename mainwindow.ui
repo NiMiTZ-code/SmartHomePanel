@@ -337,7 +337,7 @@
               <string>Status:</string>
              </property>
             </widget>
-            <widget class="QLabel" name="deviceStatuslabel">
+            <widget class="QLabel" name="deviceStatusLabel">
              <property name="geometry">
               <rect>
                <x>70</x>
@@ -413,13 +413,13 @@
               <property name="frameShadow">
                <enum>QFrame::Shadow::Raised</enum>
               </property>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="deviceInfoLabel">
                <property name="geometry">
                 <rect>
-                 <x>50</x>
-                 <y>40</y>
-                 <width>181</width>
-                 <height>20</height>
+                 <x>20</x>
+                 <y>29</y>
+                 <width>211</width>
+                 <height>241</height>
                 </rect>
                </property>
                <property name="text">

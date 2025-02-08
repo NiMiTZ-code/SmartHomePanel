@@ -6,6 +6,7 @@
 #include "newdevicewindow.h"
 #include "qlistwidget.h"
 #include "weatherstation.h"
+#include "device.h"
 //#include <QTimer>
 //#include <QDateTime>
 //#include <QCoreApplication>
@@ -37,6 +38,7 @@ public slots:
     void setTime();
     void setWeatherData();
     void updateWeatherData();
+    void updateDeviceInfo();
 
 private:
     Ui::MainWindow *ui;
@@ -46,11 +48,13 @@ private:
     QTimer *clockTimer;
     QTimer *weatherTimer;
     void listDevices();
+    Device *currentDevice;
 protected:
 
 private slots:
     void on_addDeviceButton_clicked();
     void on_acOnOffButton_clicked();
-    void on_devicesListWidget_itemClicked(QListWidgetItem *item);
+    void on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item);
+    void on_deviceOnOffButton_clicked();
 };
 #endif // MAINWINDOW_H

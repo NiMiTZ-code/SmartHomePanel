@@ -10,7 +10,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this))
+    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
 {
     ui->setupUi(this);
     // Timer to update the time every second
@@ -155,9 +155,62 @@ void MainWindow::on_acOnOffButton_clicked() {
 
 }
 
-
-void MainWindow::on_devicesListWidget_itemClicked(QListWidgetItem *item)
+void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
 {
-   // ui->deviceNameLabel->setText(item.) // tutaj jakoś by tzeba było adres przekazać
+    QString deviceName = item->text();
+    Device *selectedDevice = nullptr;
+
+    // Znalezienie urządzenia na podstawie nazwy
+    for (Device* device : networkHandler->getDevices()) {
+        if (device->getName() == deviceName) {
+            selectedDevice = device;
+            break;
+        }
+    }
+
+    if (selectedDevice) {
+        currentDevice = selectedDevice;
+        connect(currentDevice, &Device::statusChanged, this, &MainWindow::updateDeviceInfo);
+        connect(currentDevice, &Device::deviceNameChanged, this, &MainWindow::updateDeviceInfo);
+        updateDeviceInfo();
+    }
 }
 
+void MainWindow::on_deviceOnOffButton_clicked()
+{
+    if (currentDevice) {
+        if (currentDevice->getStatus() == DeviceStatus::ON) {
+            currentDevice->setStatus(DeviceStatus::OFF);
+        } else {
+            currentDevice->setStatus(DeviceStatus::ON);
+        }
+    }
+}
+
+void MainWindow::updateDeviceInfo()
+{
+    if (currentDevice) {
+        QString statusText;
+        switch (currentDevice->getStatus()) {
+        case DeviceStatus::ON:
+            statusText = "ON";
+            break;
+        case DeviceStatus::OFF:
+            statusText = "OFF";
+            break;
+        case DeviceStatus::ERROR:
+            statusText = "ERROR";
+            break;
+        }
+
+        QString deviceInfo = QString("Name: %1\nType: %2\nStatus: %3\nIP: %4")
+                                 .arg(currentDevice->getName())
+                                 .arg(typeid(*currentDevice).name())
+                                 .arg(statusText)
+                                 .arg(currentDevice->getDeviceIP().toString());
+
+        ui->deviceInfoLabel->setText(deviceInfo);
+        ui->deviceStatusLabel->setText(statusText);
+        ui->deviceNameLabel->setText(currentDevice->getName());
+    }
+}
