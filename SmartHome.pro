@@ -17,6 +17,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     networkhandler.cpp \
+    newdevicewindow.cpp \
     rgblamp.cpp \
     sensor.cpp \
     thermostat.cpp \
@@ -30,13 +31,15 @@ HEADERS += \
     lamp.h \
     mainwindow.h \
     networkhandler.h \
+    newdevicewindow.h \
     rgblamp.h \
     sensor.h \
     thermostat.h \
     weatherstation.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    newdevicewindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

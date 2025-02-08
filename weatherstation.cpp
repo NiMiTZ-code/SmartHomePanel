@@ -113,7 +113,6 @@ void WeatherStation::fetchWeatherIcon(const QString &iconCode){
             //QImage iconImage;
             if (iconImage.loadFromData(iconData)) {
                 qDebug() << "Icon image loaded successfully!";
-                //ui->weatherIconLabel->setPixmap(QPixmap::fromImage(iconImage));  // Set the icon image on the QLabel
             } else {
                 qDebug() << "Failed to load icon image!";
             }

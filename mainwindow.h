@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "networkhandler.h"
+#include "newdevicewindow.h"
 #include "weatherstation.h"
 //#include <QTimer>
 //#include <QDateTime>
@@ -27,6 +29,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    MainWindow(NetworkHandler *networkHandler = nullptr, QWidget *parent = nullptr);
     ~MainWindow();
 
 public slots:
@@ -36,10 +39,15 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    newdevicewindow *addDeviceWindow;
+    NetworkHandler *networkHandler;
     WeatherStation *weatherStation;
     QTimer *clockTimer;
     QTimer *weatherTimer;
+    void listDevices();
 protected:
 
+private slots:
+    void on_addDeviceButton_clicked();
 };
 #endif // MAINWINDOW_H

@@ -40,16 +40,10 @@ private:
     void fetchWeatherData();
     void fetchWeatherIcon(const QString &iconCode);
     bool isRequestInProgress;
-//    QTimer *weatherTimer;
+
 
 signals:
     void weatherUpdated();
-    //    QTimer *zegarTimer;
-    //    QTimer *weatherTimer;
-    //    QNetworkAccessManager *networkManager;
-    //    void fetchWeatherIcon(const QString &iconCode);
-    //    QString lastIconCode;
-    //    bool isRequestInProgress;
 };
 
 #endif // WEATHERSTATION_H

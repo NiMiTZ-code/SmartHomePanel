@@ -7,10 +7,11 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    NetworkHandler* networkHandler = new NetworkHandler();
+    MainWindow w(networkHandler);
     w.show();
     //TESTY
-    NetworkHandler* networkHandler = new NetworkHandler();
+
     RGBLamp* lampa = new RGBLamp();
     lampa->setDeviceIP(QHostAddress("127.0.0.1"));
     networkHandler->registerDevice(lampa);
