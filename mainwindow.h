@@ -39,27 +39,22 @@ public slots:
     void setTime();
     void setWeatherData();
     void updateWeatherData();
-    void updateDeviceInfo();
-
 private:
     Ui::MainWindow *ui;
-    DeviceWidget* currentDeviceWidget;
+    QList<DeviceWidget*> deviceWidgets;
 
     newdevicewindow *addDeviceWindow;
     NetworkHandler *networkHandler;
     WeatherStation *weatherStation;
     QTimer *clockTimer;
     QTimer *weatherTimer;
-    void listDevices();
-    Device *currentDevice; //czy na pewno musimy przetrzymywać adres wybranego urządzenia?
+    Device *currentDevice;
 
     Device* searchForDevice(QString deviceName);
-    void showDeviceWidget();
 protected:
 
 private slots:
     void on_addDeviceButton_clicked();
-    void on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item);
-    void on_deviceOnOffButton_clicked();
+    void addDeviceCard(Device* device);
 };
 #endif // MAINWINDOW_H

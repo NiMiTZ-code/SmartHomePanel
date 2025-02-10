@@ -12,7 +12,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), currentDeviceWidget(nullptr), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
+    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
 {
     ui->setupUi(this);
     // Timer to update the time every second
@@ -26,17 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     weatherTimer->start(300000);  // Refresh weather every 5 minutes 300000
 
     connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
-
-    //probably some kind of demonic code that has to live under the bed
-    if (!ui->deviceWidgetContainer->layout()) {
-         ui->deviceWidgetContainer->setLayout(new QVBoxLayout());
-    }
 
 }
 
 MainWindow::MainWindow(NetworkHandler *networkhandler, QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), currentDeviceWidget(nullptr), networkHandler(networkhandler), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
+    , ui(new Ui::MainWindow), networkHandler(networkhandler), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
 {
     ui->setupUi(this);
     // Timer to update the time every second
@@ -50,11 +45,6 @@ MainWindow::MainWindow(NetworkHandler *networkhandler, QWidget *parent)
     weatherTimer->start(300000);  // Refresh weather every 5 minutes 300000
 
     connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
-
-    //probably some kind of demonic code that has to live under the bed
-    if (!ui->deviceWidgetContainer->layout()) {
-        ui->deviceWidgetContainer->setLayout(new QVBoxLayout());
-    }
 }
 
 MainWindow::~MainWindow()
@@ -83,96 +73,84 @@ void MainWindow::on_addDeviceButton_clicked()
     addDeviceWindow = new newdevicewindow(this);
     int result = addDeviceWindow->exec();
     QHostAddress adres;
-    AC *newAC = nullptr;
-    Heater *newHeater = nullptr;
-    RGBLamp *newRGBLamp = nullptr;
-    Thermostat *newThermostat = nullptr;
-    Lamp *newLamp = nullptr;
-    if(result){
-        switch(addDeviceWindow->getDeviceType()){
-        case 0:
-            //ac
-            newAC = new AC;
-            newAC->setDeviceName(addDeviceWindow->getDeviceName());
-            adres.setAddress(addDeviceWindow->getDeviceIP());
-            newAC->setDeviceIP(adres);
-            networkHandler->registerDevice(newAC);
+    Device* newDevice = nullptr;  // Base pointer for any device type
 
-            qDebug() << addDeviceWindow->getDeviceName();
-            qDebug() << addDeviceWindow->getDeviceIP();
+    if(result) {
+        // Create device based on type
+        switch(addDeviceWindow->getDeviceType()) {
+        case 0:
+            newDevice = new AC();
             break;
         case 1:
-            //heater
-            newHeater = new Heater;
-            newHeater->setDeviceName(addDeviceWindow->getDeviceName());
-            adres.setAddress(addDeviceWindow->getDeviceIP());
-            newHeater->setDeviceIP(adres);
-            networkHandler->registerDevice(newHeater);
-
-            qDebug() << addDeviceWindow->getDeviceName();
-            qDebug() << addDeviceWindow->getDeviceIP();
+            newDevice = new Heater();
             break;
         case 2:
-            //RGBLamp
-            newRGBLamp = new RGBLamp;
-            newRGBLamp->setDeviceName(addDeviceWindow->getDeviceName());
-            adres.setAddress(addDeviceWindow->getDeviceIP());
-            newRGBLamp->setDeviceIP(adres);
-            networkHandler->registerDevice(newRGBLamp);
-
-            qDebug() << addDeviceWindow->getDeviceName();
-            qDebug() << addDeviceWindow->getDeviceIP();
+            newDevice = new RGBLamp();
             break;
         case 3:
-            //Thermostat
-            newThermostat = new Thermostat;
-            newThermostat->setDeviceName(addDeviceWindow->getDeviceName());
-            adres.setAddress(addDeviceWindow->getDeviceIP());
-            newThermostat->setDeviceIP(adres);
-            networkHandler->registerDevice(newThermostat);
-
-            qDebug() << addDeviceWindow->getDeviceName();
-            qDebug() << addDeviceWindow->getDeviceIP();
+            newDevice = new Thermostat();
             break;
         case 4:
-            //Lamp
-            newLamp = new Lamp;
-            newLamp->setDeviceName(addDeviceWindow->getDeviceName());
-            adres.setAddress(addDeviceWindow->getDeviceIP());
-            newLamp->setDeviceIP(adres);
-            networkHandler->registerDevice(newLamp);
-
-            qDebug() << addDeviceWindow->getDeviceName();
-            qDebug() << addDeviceWindow->getDeviceIP();
+            newDevice = new Lamp();
+            break;
         }
-        listDevices();
+
+        if(newDevice) {
+            newDevice->setDeviceName(addDeviceWindow->getDeviceName());
+            adres.setAddress(addDeviceWindow->getDeviceIP());
+            newDevice->setDeviceIP(adres);
+            networkHandler->registerDevice(newDevice);
+
+            qDebug() << "Added device:" << addDeviceWindow->getDeviceName()
+                     << "IP:" << addDeviceWindow->getDeviceIP();
+
+            // Add device card to scroll area
+            addDeviceCard(newDevice);
+        }
     }
     delete addDeviceWindow;
 }
 
-void MainWindow::listDevices(){
-    QListWidgetItem *item = new QListWidgetItem;
-    QList<Device*> devices = networkHandler->getDevices(); //wskazniki
-    for(Device* device: devices){
-        item->setText(device->getName());
-        //problem ze wszystkie się nazywają tak samo więc musiało by być jakieś oznaczenie typu?
-        //if(device->getName()=="A/C"){
-        //    QString status;
-        //    switch(device->getStatus()){
-        //    case DeviceStatus::ON:
-        //        ui->acStatusLabel->setText("ON");
-        //        break;
-        //    case DeviceStatus::OFF:
-        //        ui->acStatusLabel->setText("OFF");
-        //        break;
-        //    case DeviceStatus::ERROR:
-        //        ui->acStatusLabel->setText("ERROR");
-        //        break;
-        //    }
-        //}
-        ui->devicesListWidget->addItem(item);
+void MainWindow::addDeviceCard(Device *device)
+{
+    if(device == nullptr) {
+        return;
     }
-    ui->devicesListWidget->update();
+
+    QFrame *deviceCard = new QFrame(ui->scrollAreaWidgetContents_2);
+    deviceCard->setFrameStyle(QFrame::Panel);
+    deviceCard->setLineWidth(2);
+
+    QVBoxLayout *layout = new QVBoxLayout(deviceCard);
+    DeviceWidget* deviceWidget = nullptr;
+
+    if(auto rgbLamp = qobject_cast<RGBLamp*>(device)) {
+        deviceWidget = new RGBLampWidget(rgbLamp, deviceCard);
+    }
+    else if(auto lamp = qobject_cast<Lamp*>(device)) {
+        deviceWidget = new LampWidget(lamp, deviceCard);
+    }
+    // else if(auto ac = qobject_cast<AC*>(device)) {
+    //     deviceWidget = new ACWidget(ac, deviceCard);
+    // }
+    // else if(auto heater = qobject_cast<Heater*>(device)) {
+    //     deviceWidget = new HeaterWidget(heater, deviceCard);
+    // }
+    // else if(auto thermostat = qobject_cast<Thermostat*>(device)) {
+    //     deviceWidget = new ThermostatWidget(thermostat, deviceCard);
+    // }
+    if(deviceWidget){
+        layout->addWidget(deviceWidget);
+        QHBoxLayout* scrollLayout = qobject_cast<QHBoxLayout*>(ui->scrollAreaWidgetContents_2->layout());
+
+        if(!scrollLayout){
+            scrollLayout = new QHBoxLayout(ui->scrollAreaWidgetContents_2);
+            scrollLayout->setSpacing(10);
+            scrollLayout->setContentsMargins(10, 10, 10, 10);
+            scrollLayout->addStretch();
+        }
+        scrollLayout->insertWidget(scrollLayout->count()-1, deviceCard);
+    }
 }
 
 Device* MainWindow::searchForDevice(QString deviceName)
@@ -189,82 +167,3 @@ Device* MainWindow::searchForDevice(QString deviceName)
 }
 
 
-void MainWindow::showDeviceWidget()
-{
-
-    if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
-        currentDeviceWidget = new RGBLampWidget(rgbLamp, ui->deviceWidgetContainer);
-        ui->deviceWidgetContainer->layout()->addWidget(currentDeviceWidget);
-    }
-    else if(Lamp* lamp = qobject_cast<Lamp*>(currentDevice)){
-        currentDeviceWidget = new LampWidget(lamp, ui->deviceWidgetContainer);
-        ui->deviceWidgetContainer->layout()->addWidget(currentDeviceWidget);
-    }
-    else {
-        qDebug() << "Device type invalid.";
-        //throw a window with error
-    }
-}
-
-
-void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
-{
-    QString deviceName = item->text();
-    Device *selectedDevice = searchForDevice(deviceName);
-
-    if (selectedDevice != nullptr) {
-        currentDevice = selectedDevice;
-        connect(currentDevice, &Device::statusChanged, this, &MainWindow::updateDeviceInfo);
-        connect(currentDevice, &Device::deviceNameChanged, this, &MainWindow::updateDeviceInfo);
-        updateDeviceInfo();
-        showDeviceWidget();
-    }
-
-
-}
-
-void MainWindow::on_deviceOnOffButton_clicked() //add more variants
-{
-    if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
-        rgbLamp->toggle();
-    }
-    else if(AC* ac = qobject_cast<AC*>(currentDevice)){
-        ac->toggle();
-    }
-    else if(Heater* heater = qobject_cast<Heater*>(currentDevice)){
-        heater->toggle();
-    }
-    else {
-        qDebug() << "Device type invalid.";
-        //throw a window with error
-    }
-
-}
-
-void MainWindow::updateDeviceInfo()
-{
-    if (currentDevice) {
-        QString statusText;
-        switch (currentDevice->getStatus()) {
-        case DeviceStatus::ON:
-            statusText = "ON";
-            break;
-        case DeviceStatus::OFF:
-            statusText = "OFF";
-            break;
-        case DeviceStatus::ERROR:
-            statusText = "ERROR";
-            break;
-        }
-
-        QString deviceInfo = QString("Name: %1\nType: %2\nStatus: %3\nIP: %4")
-                                 .arg(currentDevice->getName())
-                                 .arg(QString(typeid(*currentDevice).name()).remove("class ").remove("struct "))
-                                 .arg(statusText)
-                                 .arg(currentDevice->getDeviceIP().toString());
-
-        ui->deviceInfoLabel->setText(deviceInfo);
-        ui->deviceStatusLabel->setText(statusText);
-        ui->deviceNameLabel->setText(currentDevice->getName());
-    }
-}
