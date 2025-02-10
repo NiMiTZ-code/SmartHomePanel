@@ -191,6 +191,7 @@ Device* MainWindow::searchForDevice(QString deviceName)
 
 void MainWindow::showDeviceWidget()
 {
+    //add deletion of chosen widget or previous widget
 
     if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
         currentDeviceWidget = new RGBLampWidget(rgbLamp, ui->deviceWidgetContainer);
@@ -223,48 +224,4 @@ void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
 
 }
 
-void MainWindow::on_deviceOnOffButton_clicked() //add more variants
-{
-    if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
-        rgbLamp->toggle();
-    }
-    else if(AC* ac = qobject_cast<AC*>(currentDevice)){
-        ac->toggle();
-    }
-    else if(Heater* heater = qobject_cast<Heater*>(currentDevice)){
-        heater->toggle();
-    }
-    else {
-        qDebug() << "Device type invalid.";
-        //throw a window with error
-    }
 
-}
-
-void MainWindow::updateDeviceInfo()
-{
-    if (currentDevice) {
-        QString statusText;
-        switch (currentDevice->getStatus()) {
-        case DeviceStatus::ON:
-            statusText = "ON";
-            break;
-        case DeviceStatus::OFF:
-            statusText = "OFF";
-            break;
-        case DeviceStatus::ERROR:
-            statusText = "ERROR";
-            break;
-        }
-
-        QString deviceInfo = QString("Name: %1\nType: %2\nStatus: %3\nIP: %4")
-                                 .arg(currentDevice->getName())
-                                 .arg(QString(typeid(*currentDevice).name()).remove("class ").remove("struct "))
-                                 .arg(statusText)
-                                 .arg(currentDevice->getDeviceIP().toString());
-
-        ui->deviceInfoLabel->setText(deviceInfo);
-        ui->deviceStatusLabel->setText(statusText);
-        ui->deviceNameLabel->setText(currentDevice->getName());
-    }
-}

@@ -18,8 +18,22 @@ LampWidget::~LampWidget()
 
 void LampWidget::updateUI()
 {
+    if (m_lamp()) {
+        QString statusText;
+        switch (m_lamp()->getStatus()) {
+        case DeviceStatus::ON:
+            statusText = "ON";
+            break;
+        case DeviceStatus::OFF:
+            statusText = "OFF";
+            break;
+        case DeviceStatus::ERROR:
+            statusText = "ERROR";
+            break;
+        }
     ui->statusLabel->setText(QString("Status: %1")
-                                 .arg(m_lamp()->getStatus() == DeviceStatus::ON ? "ON" : "OFF"));
+                                 .arg(statusText));
+    }
     ui->toggleButton->setText(m_lamp()->getStatus() == DeviceStatus::ON ? "Turn OFF" : "Turn ON");
 }
 
