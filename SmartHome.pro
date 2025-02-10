@@ -15,6 +15,7 @@ SOURCES += \
     devicewidget.cpp \
     heater.cpp \
     hvac.cpp \
+    hvacwidget.cpp \
     lamp.cpp \
     lampwidget.cpp \
     main.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     devicewidget.h \
     heater.h \
     hvac.h \
+    hvacwidget.h \
     lamp.h \
     lampwidget.h \
     mainwindow.h \
@@ -47,6 +49,7 @@ HEADERS += \
 
 FORMS += \
     RGBLampWidget.ui \
+    hvacwidget.ui \
     lampwidget.ui \
     mainwindow.ui \
     newdevicewindow.ui
