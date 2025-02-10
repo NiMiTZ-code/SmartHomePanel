@@ -3,7 +3,7 @@
 Thermostat::Thermostat(QObject *parent)
     : Sensor{parent}
 {
-    setStatus(DeviceStatus::OFF);
+    setStatus(DeviceStatus::ON);
     temperatureSetting = 20.0F;
     setDeviceName("Termostat");
     setCommand(QByteArray(3,0));
@@ -13,27 +13,36 @@ Thermostat::Thermostat(QObject *parent)
 void Thermostat::readValue()
 {
     //request response on demand
-    //TODO read only when device is ON, if off wake up
-    QByteArray read_command(3,0);
-    read_command[0] = 0xFF;
-    read_command[1] = 0x00;
-    read_command[2] = 0xFF;
-    setCommand(read_command);
-    sendCommand();
+    if(status == DeviceStatus::ON)
+    {
+        QByteArray read_command(3,0);
+        read_command[0] = 0xFF;
+        read_command[1] = 0x00;
+        read_command[2] = 0xFF;
+        setCommand(read_command);
+        sendCommand();
+    } else {
+        //error window or window with "Plug thermostat to outlet"
+    }
+
 }
 
 void Thermostat::setTemperatureSetting(float temp)
 {
-    if(-10.0F <= temp && temp <=50.0F){
+    if(LOWEST_TEMP <= temp && temp <=HIGHEST_TEMP){
         temperatureSetting = temp;
-    }//else ERROR
+    } else {
+        status = DeviceStatus::ERROR;
+    }
 }
 
 void Thermostat::setTemperatureReading(float temp)
 {
-    if(-10.0F <= temp && temp <=50.0F){ //in future change ranges to predefined values
+    if(LOWEST_TEMP <= temp && temp <=HIGHEST_TEMP){
         temperatureReading = temp;
-    }//else ERROR
+    } else {
+        status = DeviceStatus::ERROR;
+    }
 }
 
 void Thermostat::chngTempSetting()
@@ -75,6 +84,6 @@ void Thermostat::handleResponse(const QByteArray &response)
     }else if(response[0] == 0x01){
         setTemperatureReading(response[1]);
     }
-    //do something
+    //do something/update deviceInfo in main
 }
 
