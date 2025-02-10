@@ -12,6 +12,7 @@ SOURCES += \
     ac.cpp \
     actuator.cpp \
     device.cpp \
+    devicewidget.cpp \
     heater.cpp \
     hvac.cpp \
     lamp.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
     networkhandler.cpp \
     newdevicewindow.cpp \
     rgblamp.cpp \
+    rgblampwidget.cpp \
     sensor.cpp \
     thermostat.cpp \
     weatherstation.cpp
@@ -28,6 +30,7 @@ HEADERS += \
     ac.h \
     actuator.h \
     device.h \
+    devicewidget.h \
     heater.h \
     hvac.h \
     lamp.h \
@@ -35,11 +38,13 @@ HEADERS += \
     networkhandler.h \
     newdevicewindow.h \
     rgblamp.h \
+    rgblampwidget.h \
     sensor.h \
     thermostat.h \
     weatherstation.h
 
 FORMS += \
+    RGBLampWidget.ui \
     mainwindow.ui \
     newdevicewindow.ui
 

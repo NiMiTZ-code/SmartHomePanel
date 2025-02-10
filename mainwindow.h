@@ -7,6 +7,8 @@
 #include "qlistwidget.h"
 #include "weatherstation.h"
 #include "device.h"
+#include "devicewidget.h"
+#include "rgblampwidget.h"
 //#include <QTimer>
 //#include <QDateTime>
 //#include <QCoreApplication>
@@ -42,6 +44,8 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    DeviceWidget* currentDeviceWidget;
+
     newdevicewindow *addDeviceWindow;
     NetworkHandler *networkHandler;
     WeatherStation *weatherStation;
@@ -51,6 +55,7 @@ private:
     Device *currentDevice; //czy na pewno musimy przetrzymywać adres wybranego urządzenia?
 
     Device* searchForDevice(QString deviceName);
+    void showDeviceWidget();
 protected:
 
 private slots:
