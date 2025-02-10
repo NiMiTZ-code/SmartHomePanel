@@ -49,6 +49,8 @@ private:
     QTimer *weatherTimer;
     void listDevices();
     Device *currentDevice; //czy na pewno musimy przetrzymywać adres wybranego urządzenia?
+
+    Device* searchForDevice(QString deviceName);
 protected:
 
 private slots:

@@ -152,15 +152,9 @@ void MainWindow::listDevices(){
     ui->devicesListWidget->update();
 }
 
-void MainWindow::on_acOnOffButton_clicked() {
-
-}
-
-void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
+Device* MainWindow::searchForDevice(QString deviceName)
 {
-    QString deviceName = item->text();
     Device *selectedDevice = nullptr;
-
     // Znalezienie urządzenia na podstawie nazwy
     for (Device* device : networkHandler->getDevices()) {
         if (device->getName() == deviceName) {
@@ -168,6 +162,17 @@ void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
             break;
         }
     }
+    return selectedDevice;
+}
+
+void MainWindow::on_acOnOffButton_clicked() {
+
+}
+
+void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    QString deviceName = item->text();
+    Device *selectedDevice = searchForDevice(deviceName);
 
     if (selectedDevice != nullptr) {
         //currentDevice = selectedDevice;
