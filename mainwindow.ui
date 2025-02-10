@@ -184,6 +184,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QWidget" name="deviceWidgetContainer" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>350</height>
+           </size>
+          </property>
           <layout class="QVBoxLayout" name="verticalLayout_6"/>
          </widget>
         </item>

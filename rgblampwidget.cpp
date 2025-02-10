@@ -15,7 +15,6 @@ RGBLampWidget::RGBLampWidget(RGBLamp* lamp, QWidget* parent)
     //         this, &RGBLampWidget::on_toggleButton_clicked);
 
     ui->brightnessSlider->setRange(0, 255);
-
     updateUI();
 }
 

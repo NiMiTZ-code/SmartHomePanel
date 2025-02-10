@@ -10,7 +10,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this)), currentDevice(nullptr), currentDeviceWidget(nullptr)
+    , ui(new Ui::MainWindow), currentDeviceWidget(nullptr), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
 {
     ui->setupUi(this);
     // Timer to update the time every second
@@ -25,9 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
 
-     if (!ui->deviceWidgetContainer->layout()) {
+    //probably some kind of demonic code that has to live under the bed
+    if (!ui->deviceWidgetContainer->layout()) {
          ui->deviceWidgetContainer->setLayout(new QVBoxLayout());
-     }
+    }
 
 }
 
