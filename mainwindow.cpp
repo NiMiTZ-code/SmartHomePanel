@@ -165,9 +165,9 @@ Device* MainWindow::searchForDevice(QString deviceName)
     return selectedDevice;
 }
 
-void MainWindow::on_acOnOffButton_clicked() {
+//void MainWindow::on_acOnOffButton_clicked() {
 
-}
+//}
 
 void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
 {
