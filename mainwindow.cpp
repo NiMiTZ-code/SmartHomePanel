@@ -175,6 +175,7 @@ Device* MainWindow::searchForDevice(QString deviceName)
     return selectedDevice;
 }
 
+
 void MainWindow::showDeviceWidget()
 {
 

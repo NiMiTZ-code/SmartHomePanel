@@ -14,6 +14,7 @@ SOURCES += \
     device.cpp \
     devicewidget.cpp \
     heater.cpp \
+    hvac.cpp \
     lamp.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     device.h \
     devicewidget.h \
     heater.h \
+    hvac.h \
     lamp.h \
     mainwindow.h \
     networkhandler.h \
