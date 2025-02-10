@@ -38,7 +38,7 @@ public slots:
     void setTime();
     void setWeatherData();
     void updateWeatherData();
-    void updateDeviceInfo(Device* currDev);
+    void updateDeviceInfo();
 
 private:
     Ui::MainWindow *ui;
@@ -55,7 +55,6 @@ protected:
 
 private slots:
     void on_addDeviceButton_clicked();
-    void on_acOnOffButton_clicked();
     void on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item);
     void on_deviceOnOffButton_clicked();
 };
