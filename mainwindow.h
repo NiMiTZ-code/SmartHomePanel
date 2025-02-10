@@ -4,10 +4,10 @@
 #include <QMainWindow>
 #include "networkhandler.h"
 #include "newdevicewindow.h"
-#include "qlistwidget.h"
+#include "qframe.h"
 #include "weatherstation.h"
 #include "device.h"
-#include "devicewidget.h"
+#include <QMap>
 //#include <QTimer>
 //#include <QDateTime>
 //#include <QCoreApplication>
@@ -41,7 +41,7 @@ public slots:
     void updateWeatherData();
 private:
     Ui::MainWindow *ui;
-    QList<DeviceWidget*> deviceWidgets;
+    QMap<Device*, QFrame*> deviceCards;
 
     newdevicewindow *addDeviceWindow;
     NetworkHandler *networkHandler;
@@ -51,6 +51,7 @@ private:
     Device *currentDevice;
 
     Device* searchForDevice(QString deviceName);
+    void removeDeviceCard(Device* device);
 protected:
 
 private slots:

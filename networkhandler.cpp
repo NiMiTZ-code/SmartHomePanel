@@ -29,6 +29,11 @@ void NetworkHandler::registerDevice(Device* device)
     connect(device, &Device::sendCommandSignal,
             this, &NetworkHandler::sendCommandToDevice);
 }
+
+void NetworkHandler::unregisterDevice(Device *device)
+{
+    m_devices.removeOne(device);
+}
 void NetworkHandler::sendCommandToDevice(const QByteArray& command, const QHostAddress& ip)
 {
     m_udpSocket->writeDatagram(command, ip, PORT);

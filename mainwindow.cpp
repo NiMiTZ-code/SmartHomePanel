@@ -140,7 +140,11 @@ void MainWindow::addDeviceCard(Device *device)
     //     deviceWidget = new ThermostatWidget(thermostat, deviceCard);
     // }
     if(deviceWidget){
+        connect(deviceWidget, &DeviceWidget::removalRequested, this, &MainWindow::removeDeviceCard);
         layout->addWidget(deviceWidget);
+
+        deviceCards[device] = deviceCard;
+
         QHBoxLayout* scrollLayout = qobject_cast<QHBoxLayout*>(ui->scrollAreaWidgetContents_2->layout());
 
         if(!scrollLayout){
@@ -164,6 +168,27 @@ Device* MainWindow::searchForDevice(QString deviceName)
         }
     }
     return selectedDevice;
+}
+
+void MainWindow::removeDeviceCard(Device *device)
+{
+    if(device == nullptr) {
+        return;
+    }
+
+    if(deviceCards.contains(device)) {
+        QFrame* deviceCard = deviceCards[device];
+        QHBoxLayout* scrollLayout = qobject_cast<QHBoxLayout*>(ui->scrollAreaWidgetContents_2->layout());
+
+        if(scrollLayout) {
+            scrollLayout->removeWidget(deviceCard);
+        }
+
+        networkHandler->unregisterDevice(device);
+        deviceCards.remove(device);
+        deviceCard->deleteLater();
+        device->deleteLater();
+    }
 }
 
 
