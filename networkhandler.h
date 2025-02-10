@@ -22,6 +22,7 @@ public:
     ~NetworkHandler();
     //QList<Device*> m_devices; było do testowania listy
     void registerDevice(Device* device);
+    void unregisterDevice(Device* device);
     static NetworkHandler* getInstance(); //singletgon
 
     QList<Device*> getDevices();
