@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RGBLampWidget</class>
- <widget class="QWidget" name="RGBLampWidget">
+ <class>LampWidget</class>
+ <widget class="QWidget" name="LampWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>328</height>
+    <width>314</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,20 +16,10 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
-     <item alignment="">
+     <item>
       <widget class="QLabel" name="nameLabel">
        <property name="text">
         <string>Name</string>
-       </property>
-      </widget>
-     </item>
-     <item alignment="">
-      <widget class="QLabel" name="RGBLamp_deviceIcon">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap resource="resources.qrc">:/static/icons/rgb-light-bulb.png</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -37,9 +27,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="colorPickerButton">
+      <widget class="QLabel" name="lamp_deviceIcon">
        <property name="text">
-        <string>Color Picker</string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="resources.qrc">:/static/icons/light-bulb.png</pixmap>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -50,24 +46,17 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QSlider" name="brightnessSlider">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
      <item alignment="">
       <widget class="QLabel" name="statusLabel">
        <property name="text">
-        <string>Status: OFF</string>
+        <string>Status: </string>
        </property>
       </widget>
      </item>
      <item alignment="">
-      <widget class="QLabel" name="IPAddressLabel">
+      <widget class="QLabel" name="IPAdressLabel">
        <property name="text">
-        <string>IP</string>
+        <string>IP:</string>
        </property>
       </widget>
      </item>

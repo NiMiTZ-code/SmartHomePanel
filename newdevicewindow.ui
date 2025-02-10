@@ -58,6 +58,11 @@
      <string>Thermostat</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Lamp</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">

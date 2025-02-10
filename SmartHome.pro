@@ -16,6 +16,7 @@ SOURCES += \
     heater.cpp \
     hvac.cpp \
     lamp.cpp \
+    lampwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     networkhandler.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     heater.h \
     hvac.h \
     lamp.h \
+    lampwidget.h \
     mainwindow.h \
     networkhandler.h \
     newdevicewindow.h \
@@ -45,6 +47,7 @@ HEADERS += \
 
 FORMS += \
     RGBLampWidget.ui \
+    lampwidget.ui \
     mainwindow.ui \
     newdevicewindow.ui
 
@@ -56,3 +59,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     .gitignore \
     SmartHome.pro.user
+
+RESOURCES += \
+    resources.qrc

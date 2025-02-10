@@ -15,6 +15,9 @@ RGBLampWidget::RGBLampWidget(RGBLamp* lamp, QWidget* parent)
     //         this, &RGBLampWidget::on_toggleButton_clicked);
 
     ui->brightnessSlider->setRange(0, 255);
+    ui->nameLabel->setText(lamp->getName());
+    ui->IPAddressLabel->setText("IP: " + lamp->getDeviceIP().toString());
+    ui->RGBLamp_deviceIcon->setPixmap(QPixmap(":/static/icons/rgb-light-bulb.png"));
     updateUI();
 }
 
@@ -27,6 +30,8 @@ void RGBLampWidget::updateUI()
 {
     ui->statusLabel->setText(QString("Status: %1")
                              .arg(m_lamp()->getStatus() == DeviceStatus::ON ? "ON" : "OFF"));
+    ui->toggleButton->setText(m_lamp()->getStatus() == DeviceStatus::ON ? "Turn OFF" : "Turn ON");
+    ui->brightnessSlider->setValue(m_lamp()->getBrightness());
 }
 
 void RGBLampWidget::on_colorPickerButton_clicked()

@@ -8,7 +8,6 @@
 #include "weatherstation.h"
 #include "device.h"
 #include "devicewidget.h"
-#include "rgblampwidget.h"
 //#include <QTimer>
 //#include <QDateTime>
 //#include <QCoreApplication>

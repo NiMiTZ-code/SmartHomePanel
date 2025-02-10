@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "lampwidget.h"
+#include "rgblampwidget.h"
 #include "ui_mainwindow.h"
 #include "networkhandler.h"
 #include "ac.h"
@@ -85,6 +87,7 @@ void MainWindow::on_addDeviceButton_clicked()
     Heater *newHeater = nullptr;
     RGBLamp *newRGBLamp = nullptr;
     Thermostat *newThermostat = nullptr;
+    Lamp *newLamp = nullptr;
     if(result){
         switch(addDeviceWindow->getDeviceType()){
         case 0:
@@ -131,6 +134,16 @@ void MainWindow::on_addDeviceButton_clicked()
             qDebug() << addDeviceWindow->getDeviceName();
             qDebug() << addDeviceWindow->getDeviceIP();
             break;
+        case 4:
+            //Lamp
+            newLamp = new Lamp;
+            newLamp->setDeviceName(addDeviceWindow->getDeviceName());
+            adres.setAddress(addDeviceWindow->getDeviceIP());
+            newLamp->setDeviceIP(adres);
+            networkHandler->registerDevice(newLamp);
+
+            qDebug() << addDeviceWindow->getDeviceName();
+            qDebug() << addDeviceWindow->getDeviceIP();
         }
         listDevices();
     }
@@ -181,6 +194,10 @@ void MainWindow::showDeviceWidget()
 
     if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
         currentDeviceWidget = new RGBLampWidget(rgbLamp, ui->deviceWidgetContainer);
+        ui->deviceWidgetContainer->layout()->addWidget(currentDeviceWidget);
+    }
+    else if(Lamp* lamp = qobject_cast<Lamp*>(currentDevice)){
+        currentDeviceWidget = new LampWidget(lamp, ui->deviceWidgetContainer);
         ui->deviceWidgetContainer->layout()->addWidget(currentDeviceWidget);
     }
     else {
