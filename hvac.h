@@ -15,6 +15,9 @@ public:
 
     void addAC(AC* ac);
     void addHeater(Heater* heater);
+    Thermostat *getThermostat(){return thermostat;}
+    QList<AC*> getDevicesAC(){ return devicesAC;}
+    QList<Heater*> getDevicesHeater(){return devicesHeater;}
 
 private:
     Thermostat* thermostat;

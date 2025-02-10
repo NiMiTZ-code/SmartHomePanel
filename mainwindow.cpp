@@ -155,21 +155,6 @@ void MainWindow::listDevices(){
     QList<Device*> devices = networkHandler->getDevices(); //wskazniki
     for(Device* device: devices){
         item->setText(device->getName());
-        //problem ze wszystkie się nazywają tak samo więc musiało by być jakieś oznaczenie typu?
-        //if(device->getName()=="A/C"){
-        //    QString status;
-        //    switch(device->getStatus()){
-        //    case DeviceStatus::ON:
-        //        ui->acStatusLabel->setText("ON");
-        //        break;
-        //    case DeviceStatus::OFF:
-        //        ui->acStatusLabel->setText("OFF");
-        //        break;
-        //    case DeviceStatus::ERROR:
-        //        ui->acStatusLabel->setText("ERROR");
-        //        break;
-        //    }
-        //}
         ui->devicesListWidget->addItem(item);
     }
     ui->devicesListWidget->update();

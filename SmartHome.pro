@@ -15,6 +15,7 @@ SOURCES += \
     devicewidget.cpp \
     heater.cpp \
     hvac.cpp \
+    hvacwidget.cpp \
     lamp.cpp \
     lampwidget.cpp \
     main.cpp \
@@ -25,7 +26,6 @@ SOURCES += \
     rgblampwidget.cpp \
     sensor.cpp \
     thermostat.cpp \
-    thermostatwidget.cpp \
     weatherstation.cpp
 
 HEADERS += \
@@ -35,6 +35,7 @@ HEADERS += \
     devicewidget.h \
     heater.h \
     hvac.h \
+    hvacwidget.h \
     lamp.h \
     lampwidget.h \
     mainwindow.h \
@@ -44,15 +45,14 @@ HEADERS += \
     rgblampwidget.h \
     sensor.h \
     thermostat.h \
-    thermostatwidget.h \
     weatherstation.h
 
 FORMS += \
     RGBLampWidget.ui \
+    hvacwidget.ui \
     lampwidget.ui \
     mainwindow.ui \
-    newdevicewindow.ui \
-    thermostatwidget.ui
+    newdevicewindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
