@@ -6,12 +6,13 @@ RGBLampWidget::RGBLampWidget(RGBLamp* lamp, QWidget* parent)
     : DeviceWidget(lamp, parent), ui(new Ui::RGBLampWidget)
 {
     ui->setupUi(this);
-    connect(ui->colorPickerButton, &QPushButton::clicked,
-            this, &RGBLampWidget::on_colorPickerButton_clicked);
-    connect(ui->brightnessSlider, &QSlider::valueChanged,
-            this, &RGBLampWidget::on_brightnessSlider_valueChanged);
-    connect(ui->toggleButton, &QPushButton::clicked,
-            this, &RGBLampWidget::on_toggleButton_clicked);
+    //already connected by Ui, no need for that
+    // connect(ui->colorPickerButton, &QPushButton::clicked,
+    //         this, &RGBLampWidget::on_colorPickerButton_clicked);
+    // connect(ui->brightnessSlider, &QSlider::valueChanged,
+    //         this, &RGBLampWidget::on_brightnessSlider_valueChanged);
+    // connect(ui->toggleButton, &QPushButton::clicked,
+    //         this, &RGBLampWidget::on_toggleButton_clicked);
 
     ui->brightnessSlider->setRange(0, 255);
 

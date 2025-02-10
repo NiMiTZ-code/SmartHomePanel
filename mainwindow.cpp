@@ -10,7 +10,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
+    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this)), currentDevice(nullptr), currentDeviceWidget(nullptr)
 {
     ui->setupUi(this);
     // Timer to update the time every second
@@ -24,6 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
     weatherTimer->start(300000);  // Refresh weather every 5 minutes 300000
 
     connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
+
+     if (!ui->deviceWidgetContainer->layout()) {
+         ui->deviceWidgetContainer->setLayout(new QVBoxLayout());
+     }
 
 }
 
@@ -165,6 +169,19 @@ Device* MainWindow::searchForDevice(QString deviceName)
     return selectedDevice;
 }
 
+void MainWindow::showDeviceWidget()
+{
+
+    if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
+        currentDeviceWidget = new RGBLampWidget(rgbLamp, ui->deviceWidgetContainer);
+        ui->deviceWidgetContainer->layout()->addWidget(currentDeviceWidget);
+    }
+    else {
+        qDebug() << "Device type invalid.";
+        //throw a window with error
+    }
+}
+
 
 void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
 {
@@ -176,7 +193,10 @@ void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
         connect(currentDevice, &Device::statusChanged, this, &MainWindow::updateDeviceInfo);
         connect(currentDevice, &Device::deviceNameChanged, this, &MainWindow::updateDeviceInfo);
         updateDeviceInfo();
+        showDeviceWidget();
     }
+
+
 }
 
 void MainWindow::on_deviceOnOffButton_clicked() //add more variants
