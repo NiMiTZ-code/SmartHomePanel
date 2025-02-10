@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::MainWindow(NetworkHandler *networkhandler, QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), networkHandler(networkhandler), weatherStation(new WeatherStation(this))
+    , ui(new Ui::MainWindow), currentDeviceWidget(nullptr), networkHandler(networkhandler), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
 {
     ui->setupUi(this);
     // Timer to update the time every second
@@ -48,6 +48,11 @@ MainWindow::MainWindow(NetworkHandler *networkhandler, QWidget *parent)
     weatherTimer->start(300000);  // Refresh weather every 5 minutes 300000
 
     connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
+
+    //probably some kind of demonic code that has to live under the bed
+    if (!ui->deviceWidgetContainer->layout()) {
+        ui->deviceWidgetContainer->setLayout(new QVBoxLayout());
+    }
 }
 
 MainWindow::~MainWindow()
