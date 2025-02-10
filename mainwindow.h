@@ -38,7 +38,7 @@ public slots:
     void setTime();
     void setWeatherData();
     void updateWeatherData();
-    void updateDeviceInfo();
+    void updateDeviceInfo(Device* currDev);
 
 private:
     Ui::MainWindow *ui;
@@ -48,7 +48,7 @@ private:
     QTimer *clockTimer;
     QTimer *weatherTimer;
     void listDevices();
-    Device *currentDevice;
+    Device *currentDevice; //czy na pewno musimy przetrzymywać adres wybranego urządzenia?
 protected:
 
 private slots:

@@ -14,6 +14,7 @@ public:
 private slots:
     void onUIToggle();
    // void onTurnHeater_ON();
+    //implement someohow slot to turn heater on
 signals:
     void heaterToggled(bool isOn);
 };
