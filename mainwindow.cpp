@@ -107,8 +107,6 @@ void MainWindow::on_addDeviceButton_clicked()
             // Add device card to scroll area
             addDeviceCard(newDevice);
         }
-
-        listDevices();
     }
     delete addDeviceWindow;
 }
@@ -152,35 +150,7 @@ void MainWindow::addDeviceCard(Device *device)
             scrollLayout->addStretch();
         }
         scrollLayout->insertWidget(scrollLayout->count()-1, deviceCard);
-
-        QScrollBar* hBar = ui->scrollArea->horizontalScrollBar();
     }
-}
-
-
-void MainWindow::listDevices(){
-    QListWidgetItem *item = new QListWidgetItem;
-    QList<Device*> devices = networkHandler->getDevices(); //wskazniki
-    for(Device* device: devices){
-        item->setText(device->getName());
-        //problem ze wszystkie się nazywają tak samo więc musiało by być jakieś oznaczenie typu?
-        //if(device->getName()=="A/C"){
-        //    QString status;
-        //    switch(device->getStatus()){
-        //    case DeviceStatus::ON:
-        //        ui->acStatusLabel->setText("ON");
-        //        break;
-        //    case DeviceStatus::OFF:
-        //        ui->acStatusLabel->setText("OFF");
-        //        break;
-        //    case DeviceStatus::ERROR:
-        //        ui->acStatusLabel->setText("ERROR");
-        //        break;
-        //    }
-        //}
-        ui->devicesListWidget->addItem(item);
-    }
-    ui->devicesListWidget->update();
 }
 
 Device* MainWindow::searchForDevice(QString deviceName)
@@ -194,21 +164,6 @@ Device* MainWindow::searchForDevice(QString deviceName)
         }
     }
     return selectedDevice;
-}
-
-
-
-
-void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
-{
-    QString deviceName = item->text();
-    Device *selectedDevice = searchForDevice(deviceName);
-
-    if (selectedDevice != nullptr) {
-        currentDevice = selectedDevice;
-    }
-
-
 }
 
 

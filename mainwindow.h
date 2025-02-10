@@ -48,16 +48,13 @@ private:
     WeatherStation *weatherStation;
     QTimer *clockTimer;
     QTimer *weatherTimer;
-    void listDevices();
     Device *currentDevice;
 
     Device* searchForDevice(QString deviceName);
-    void showDeviceWidget();
 protected:
 
 private slots:
     void on_addDeviceButton_clicked();
     void addDeviceCard(Device* device);
-    void on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item);
 };
 #endif // MAINWINDOW_H

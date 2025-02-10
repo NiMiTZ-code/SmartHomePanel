@@ -215,52 +215,22 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QFrame" name="frame_6">
+           <widget class="QFrame" name="frame">
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Shadow::Raised</enum>
             </property>
-            <widget class="QListWidget" name="devicesListWidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>160</y>
-               <width>481</width>
-               <height>151</height>
-              </rect>
-             </property>
-            </widget>
-            <widget class="QFrame" name="frame_4">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>487</width>
-               <height>142</height>
-              </rect>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::Shape::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Shadow::Raised</enum>
-             </property>
-             <widget class="QPushButton" name="addDeviceButton">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>40</y>
-                <width>111</width>
-                <height>51</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Add New Device</string>
-              </property>
-             </widget>
-            </widget>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QPushButton" name="addDeviceButton">
+               <property name="text">
+                <string>Add new device</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
