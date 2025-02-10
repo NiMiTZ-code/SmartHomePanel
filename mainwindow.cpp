@@ -152,15 +152,9 @@ void MainWindow::listDevices(){
     ui->devicesListWidget->update();
 }
 
-void MainWindow::on_acOnOffButton_clicked() {
-
-}
-
-void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
+Device* MainWindow::searchForDevice(QString deviceName)
 {
-    QString deviceName = item->text();
     Device *selectedDevice = nullptr;
-
     // Znalezienie urządzenia na podstawie nazwy
     for (Device* device : networkHandler->getDevices()) {
         if (device->getName() == deviceName) {
@@ -168,24 +162,42 @@ void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
             break;
         }
     }
+    return selectedDevice;
+}
+
+void MainWindow::on_acOnOffButton_clicked() {
+
+}
+
+void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    QString deviceName = item->text();
+    Device *selectedDevice = searchForDevice(deviceName);
 
     if (selectedDevice != nullptr) {
-        //currentDevice = selectedDevice;
+        currentDevice = selectedDevice;
         //connect(currentDevice, &Device::statusChanged, this, &MainWindow::updateDeviceInfo);
         //connect(currentDevice, &Device::deviceNameChanged, this, &MainWindow::updateDeviceInfo);
         updateDeviceInfo(selectedDevice);
     }
 }
 
-void MainWindow::on_deviceOnOffButton_clicked()
+void MainWindow::on_deviceOnOffButton_clicked() //add more variants
 {
-    if (currentDevice) {
-        if (currentDevice->getStatus() == DeviceStatus::ON) {
-            currentDevice->setStatus(DeviceStatus::OFF);
-        } else {
-            currentDevice->setStatus(DeviceStatus::ON);
-        }
+    if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
+        rgbLamp->toggle();
     }
+    else if(AC* ac = qobject_cast<AC*>(currentDevice)){
+        ac->toggle();
+    }
+    else if(Heater* heater = qobject_cast<Heater*>(currentDevice)){
+        heater->toggle();
+    }
+    else {
+        qDebug() << "Device type invalid.";
+        //throw a window with error
+    }
+
 }
 
 void MainWindow::updateDeviceInfo(Device* currDev)
