@@ -15,6 +15,9 @@ private slots:
     void onUIToggle();
     // void onTurnAC_ON();
     //implement someohow slot to turn AC on, unless won't need
+public slots:
+    void onTurnAC_ON();
+    void onTurnAC_OFF();
 signals:
     void heaterToggled(bool isOn);
 };

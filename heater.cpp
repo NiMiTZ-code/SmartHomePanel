@@ -34,3 +34,13 @@ void Heater::onUIToggle()
 {
     toggle();
 }
+
+void Heater::onTurnHeater_ON(){
+    setStatus(DeviceStatus::OFF);
+    emit heaterToggled(true);
+}
+
+void Heater::onTurnHeater_OFF(){
+    setStatus(DeviceStatus::OFF);
+    emit heaterToggled(false);
+}

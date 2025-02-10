@@ -13,6 +13,7 @@ SOURCES += \
     actuator.cpp \
     device.cpp \
     heater.cpp \
+    hvac.cpp \
     lamp.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     actuator.h \
     device.h \
     heater.h \
+    hvac.h \
     lamp.h \
     mainwindow.h \
     networkhandler.h \
