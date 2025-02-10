@@ -38,7 +38,7 @@ public slots:
     void setTime();
     void setWeatherData();
     void updateWeatherData();
-    void updateDeviceInfo(Device* currDev);
+    void updateDeviceInfo();
 
 private:
     Ui::MainWindow *ui;

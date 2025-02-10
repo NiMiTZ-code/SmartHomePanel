@@ -71,10 +71,10 @@ void MainWindow::on_addDeviceButton_clicked()
     addDeviceWindow = new newdevicewindow(this);
     int result = addDeviceWindow->exec();
     QHostAddress adres;
-    AC *newAC;
-    Heater *newHeater;
-    RGBLamp *newRGBLamp;
-    Thermostat *newThermostat;
+    AC *newAC = nullptr;
+    Heater *newHeater = nullptr;
+    RGBLamp *newRGBLamp = nullptr;
+    Thermostat *newThermostat = nullptr;
     if(result){
         switch(addDeviceWindow->getDeviceType()){
         case 0:
@@ -176,9 +176,9 @@ void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
 
     if (selectedDevice != nullptr) {
         currentDevice = selectedDevice;
-        //connect(currentDevice, &Device::statusChanged, this, &MainWindow::updateDeviceInfo);
-        //connect(currentDevice, &Device::deviceNameChanged, this, &MainWindow::updateDeviceInfo);
-        updateDeviceInfo(selectedDevice);
+        connect(currentDevice, &Device::statusChanged, this, &MainWindow::updateDeviceInfo);
+        connect(currentDevice, &Device::deviceNameChanged, this, &MainWindow::updateDeviceInfo);
+        updateDeviceInfo();
     }
 }
 
@@ -200,11 +200,11 @@ void MainWindow::on_deviceOnOffButton_clicked() //add more variants
 
 }
 
-void MainWindow::updateDeviceInfo(Device* currDev)
+void MainWindow::updateDeviceInfo()
 {
-    if (currDev) {
+    if (currentDevice) {
         QString statusText;
-        switch (currDev->getStatus()) {
+        switch (currentDevice->getStatus()) {
         case DeviceStatus::ON:
             statusText = "ON";
             break;
@@ -217,13 +217,13 @@ void MainWindow::updateDeviceInfo(Device* currDev)
         }
 
         QString deviceInfo = QString("Name: %1\nType: %2\nStatus: %3\nIP: %4")
-                                 .arg(currDev->getName())
-                                 .arg(QString(typeid(*currDev).name()).remove("class ").remove("struct "))
+                                 .arg(currentDevice->getName())
+                                 .arg(QString(typeid(*currentDevice).name()).remove("class ").remove("struct "))
                                  .arg(statusText)
-                                 .arg(currDev->getDeviceIP().toString());
+                                 .arg(currentDevice->getDeviceIP().toString());
 
         ui->deviceInfoLabel->setText(deviceInfo);
         ui->deviceStatusLabel->setText(statusText);
-        ui->deviceNameLabel->setText(currDev->getName());
+        ui->deviceNameLabel->setText(currentDevice->getName());
     }
 }
