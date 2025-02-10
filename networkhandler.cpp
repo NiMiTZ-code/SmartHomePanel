@@ -56,3 +56,7 @@ void NetworkHandler::handleResponse()
         }
     }
 }
+
+QList<Device*> NetworkHandler::getDevices(){
+    return m_devices;
+}

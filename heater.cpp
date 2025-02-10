@@ -6,7 +6,6 @@ Heater::Heater(QObject *parent)
     setDeviceName("Heater");
     setStatus(DeviceStatus::OFF);
     setCommand(QByteArray(1,0));
-
 }
 void Heater::toggle()
 {
@@ -34,4 +33,14 @@ void Heater::sendCommand()
 void Heater::onUIToggle()
 {
     toggle();
+}
+
+void Heater::onTurnHeater_ON(){
+    setStatus(DeviceStatus::OFF);
+    emit heaterToggled(true);
+}
+
+void Heater::onTurnHeater_OFF(){
+    setStatus(DeviceStatus::OFF);
+    emit heaterToggled(false);
 }

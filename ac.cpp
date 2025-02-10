@@ -35,3 +35,12 @@ void AC::onUIToggle()
     toggle();
 }
 
+void AC::onTurnAC_ON(){
+    setStatus(DeviceStatus::ON);
+    emit heaterToggled(false);
+}
+
+void AC::onTurnAC_OFF(){
+    setStatus(DeviceStatus::OFF);
+    emit heaterToggled(false);
+}

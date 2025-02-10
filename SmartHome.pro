@@ -12,12 +12,16 @@ SOURCES += \
     ac.cpp \
     actuator.cpp \
     device.cpp \
+    devicewidget.cpp \
     heater.cpp \
+    hvac.cpp \
     lamp.cpp \
     main.cpp \
     mainwindow.cpp \
     networkhandler.cpp \
+    newdevicewindow.cpp \
     rgblamp.cpp \
+    rgblampwidget.cpp \
     sensor.cpp \
     thermostat.cpp \
     weatherstation.cpp
@@ -26,17 +30,23 @@ HEADERS += \
     ac.h \
     actuator.h \
     device.h \
+    devicewidget.h \
     heater.h \
+    hvac.h \
     lamp.h \
     mainwindow.h \
     networkhandler.h \
+    newdevicewindow.h \
     rgblamp.h \
+    rgblampwidget.h \
     sensor.h \
     thermostat.h \
     weatherstation.h
 
 FORMS += \
-    mainwindow.ui
+    RGBLampWidget.ui \
+    mainwindow.ui \
+    newdevicewindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

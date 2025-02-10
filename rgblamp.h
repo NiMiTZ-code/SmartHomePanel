@@ -18,12 +18,15 @@ public:
     uint8_t getBrightness(){
         return m_brightness;
     }
+    QColor getColor(){
+        return m_mixedColor;
+    }
     void setBrightness(uint8_t val);
     void mixColors(uint8_t R, uint8_t G, uint8_t B);
     void chngBrightness(); //used on signal
     void chngColor();
     void toggle() override;
-    void sendCommand () override;
+    void sendCommand() override;
 
 };
 

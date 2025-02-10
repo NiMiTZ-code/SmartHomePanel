@@ -20,9 +20,11 @@ private:
 public:
     explicit NetworkHandler(QObject *parent = nullptr);
     ~NetworkHandler();
-
+    //QList<Device*> m_devices; było do testowania listy
     void registerDevice(Device* device);
     static NetworkHandler* getInstance(); //singletgon
+
+    QList<Device*> getDevices();
 
 public slots:
     void sendCommandToDevice(const QByteArray& command, const QHostAddress& ip);
