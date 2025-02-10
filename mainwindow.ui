@@ -183,116 +183,37 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QWidget" name="deviceWidgetContainer" native="true">
+         <widget class="QScrollArea" name="scrollArea">
           <property name="maximumSize">
            <size>
-            <width>300</width>
-            <height>350</height>
+            <width>600</width>
+            <height>16777215</height>
            </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6"/>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>598</width>
+             <height>385</height>
+            </rect>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+          </widget>
          </widget>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QFrame" name="frame_4">
-            <property name="frameShape">
-             <enum>QFrame::Shape::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
-            </property>
-            <widget class="QPushButton" name="addDeviceButton">
-             <property name="geometry">
-              <rect>
-               <x>18</x>
-               <y>20</y>
-               <width>221</width>
-               <height>51</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Add New Device</string>
-             </property>
-            </widget>
-           </widget>
-          </item>
-          <item>
-           <widget class="QFrame" name="frame_5">
-            <property name="frameShape">
-             <enum>QFrame::Shape::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
-            </property>
-            <widget class="QLabel" name="label_11">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>10</y>
-               <width>49</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Device:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="deviceNameLabel">
-             <property name="geometry">
-              <rect>
-               <x>80</x>
-               <y>10</y>
-               <width>49</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Name</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_12">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>30</y>
-               <width>49</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Status:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="deviceStatusLabel">
-             <property name="geometry">
-              <rect>
-               <x>70</x>
-               <y>30</y>
-               <width>49</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Status</string>
-             </property>
-            </widget>
-            <widget class="QPushButton" name="deviceOnOffButton">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>50</y>
-               <width>80</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>ON/OFF</string>
-             </property>
-            </widget>
-           </widget>
-          </item>
           <item>
            <widget class="QFrame" name="frame_6">
             <property name="frameShape">
@@ -305,60 +226,44 @@
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>259</width>
-               <height>111</height>
+               <y>160</y>
+               <width>481</width>
+               <height>151</height>
               </rect>
              </property>
+            </widget>
+            <widget class="QFrame" name="frame_4">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>487</width>
+               <height>142</height>
+              </rect>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Shape::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Raised</enum>
+             </property>
+             <widget class="QPushButton" name="addDeviceButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>40</y>
+                <width>111</width>
+                <height>51</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Add New Device</string>
+              </property>
+             </widget>
             </widget>
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QFrame" name="frame_7">
-          <property name="frameShape">
-           <enum>QFrame::Shape::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Raised</enum>
-          </property>
-          <widget class="QWidget" name="verticalLayoutWidget_2">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>261</width>
-             <height>291</height>
-            </rect>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
-            <item>
-             <widget class="QFrame" name="frame_9">
-              <property name="frameShape">
-               <enum>QFrame::Shape::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Shadow::Raised</enum>
-              </property>
-              <widget class="QLabel" name="deviceInfoLabel">
-               <property name="geometry">
-                <rect>
-                 <x>20</x>
-                 <y>29</y>
-                 <width>211</width>
-                 <height>241</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>tu np status</string>
-               </property>
-              </widget>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
         </item>
        </layout>
       </item>
