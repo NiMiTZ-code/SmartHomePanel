@@ -150,15 +150,6 @@ void MainWindow::on_addDeviceButton_clicked()
     delete addDeviceWindow;
 }
 
-void MainWindow::listDevices(){
-    QListWidgetItem *item = new QListWidgetItem;
-    QList<Device*> devices = networkHandler->getDevices(); //wskazniki
-    for(Device* device: devices){
-        item->setText(device->getName());
-        ui->devicesListWidget->addItem(item);
-    }
-    ui->devicesListWidget->update();
-}
 
 Device* MainWindow::searchForDevice(QString deviceName)
 {
