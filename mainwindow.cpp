@@ -182,7 +182,7 @@ void MainWindow::on_devicesListWidget_itemDoubleClicked(QListWidgetItem *item)
     }
 }
 
-void MainWindow::on_deviceOnOffButton_clicked() //toggle
+void MainWindow::on_deviceOnOffButton_clicked() //add more variants
 {
     if(RGBLamp* rgbLamp = qobject_cast<RGBLamp*>(currentDevice)){
         rgbLamp->toggle();
@@ -195,6 +195,7 @@ void MainWindow::on_deviceOnOffButton_clicked() //toggle
     }
     else {
         qDebug() << "Device type invalid.";
+        //throw a window with error
     }
 
 }
