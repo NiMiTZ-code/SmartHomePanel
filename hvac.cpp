@@ -1,8 +1,10 @@
 #include "hvac.h"
 
-HVAC::HVAC(QObject *parent)
-    : Device{parent}, thermostat(new Thermostat)
-{}
+HVAC::HVAC(Thermostat *thermosta,QObject *parent)
+    : Device{parent}, thermostat(thermosta)
+{
+    this->setStatus(DeviceStatus::ON);
+}
 
 void HVAC::addAC(AC* ac){
     devicesAC.append(ac);

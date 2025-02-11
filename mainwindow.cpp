@@ -7,6 +7,8 @@
 #include "heater.h"
 #include "rgblamp.h"
 #include "thermostat.h"
+#include "hvac.h"
+#include "hvacwidget.h"
 //#include "device.h"
 
 
@@ -74,24 +76,32 @@ void MainWindow::on_addDeviceButton_clicked()
     int result = addDeviceWindow->exec();
     QHostAddress adres;
     Device* newDevice = nullptr;  // Base pointer for any device type
-
+    Thermostat* newThermostat = nullptr;
     if(result) {
         // Create device based on type
         switch(addDeviceWindow->getDeviceType()) {
         case 0:
-            newDevice = new AC();
+            //newDevice = new AC();
+            newThermostat = new Thermostat;
+            newThermostat->setDeviceName(addDeviceWindow->getThermostatName());
+            adres.setAddress(addDeviceWindow->getThermostatIP());
+            newThermostat->setDeviceIP(adres);
+            newDevice = new HVAC(newThermostat);
+            //newThermostat = nullptr;
             break;
         case 1:
-            newDevice = new Heater();
-            break;
-        case 2:
+            //newDevice = new Heater();
             newDevice = new RGBLamp();
             break;
+        case 2:
+            //newDevice = new RGBLamp();
+            newDevice = new Lamp();
+            break;
         case 3:
-            newDevice = new Thermostat();
+            //newDevice = new Thermostat();
             break;
         case 4:
-            newDevice = new Lamp();
+            //newDevice = new Lamp();
             break;
         }
 
@@ -129,6 +139,9 @@ void MainWindow::addDeviceCard(Device *device)
     }
     else if(auto lamp = qobject_cast<Lamp*>(device)) {
         deviceWidget = new LampWidget(lamp, deviceCard);
+    }
+    else if(auto hvac = qobject_cast<HVAC*>(device)) {
+        deviceWidget = new HVACWidget(hvac,deviceCard);
     }
     // else if(auto ac = qobject_cast<AC*>(device)) {
     //     deviceWidget = new ACWidget(ac, deviceCard);
