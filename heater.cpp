@@ -36,11 +36,13 @@ void Heater::onUIToggle()
 }
 
 void Heater::onTurnHeater_ON(){
-    setStatus(DeviceStatus::OFF);
+    setStatus(DeviceStatus::ON);
     emit heaterToggled(true);
+    qDebug() << "Heater włączone";
 }
 
 void Heater::onTurnHeater_OFF(){
     setStatus(DeviceStatus::OFF);
     emit heaterToggled(false);
+    qDebug() << "Heater wyłączone";
 }

@@ -36,10 +36,12 @@ void HVACWidget::listHVACdevices(){
     HVACdevice->setText(m_unitHVAC()->getThermostat()->getName());
     ui->devicesHVAClistWidget->addItem(HVACdevice);
     for(auto device: m_unitHVAC()->getDevicesAC()){
+        QListWidgetItem *HVACdevice = new QListWidgetItem;
         HVACdevice->setText(device->getName());
         ui->devicesHVAClistWidget->addItem(HVACdevice);
     }
     for(auto device: m_unitHVAC()->getDevicesHeater()){
+        QListWidgetItem *HVACdevice = new QListWidgetItem;
         HVACdevice->setText(device->getName());
         ui->devicesHVAClistWidget->addItem(HVACdevice);
     }
@@ -51,20 +53,19 @@ void HVACWidget::on_addHVACdeviceButton_clicked()
     address.setAddress(ui->newDeviceIpLiEd->text());
     QListWidgetItem *item = new QListWidgetItem;
     if(ui->newDeviceTypeCoBox->currentIndex() == 0){
-        AC newAC;
-        newAC.setDeviceName(ui->newDeviceNameLiEd->text());
-        qDebug() << "ui->newDeviceNameLiEd->text()";
-        newAC.setDeviceIP(address);
-        m_unitHVAC()->addAC(&newAC);
+        qDebug() << "Dodawanie urządzenia AC";
+        AC* newAC = new AC;
+        newAC->setDeviceName(ui->newDeviceNameLiEd->text());
+        newAC->setDeviceIP(address);
+        m_unitHVAC()->addAC(newAC);
     } else {
-        Heater newHeater;
-        newHeater.setDeviceName(ui->newDeviceNameLiEd->text());
-        newHeater.setDeviceIP(address);
-        m_unitHVAC()->addHeater(&newHeater);
+        qDebug() << "Dodawanie urządzenia Heater";
+        Heater* newHeater = new Heater;
+        newHeater->setDeviceName(ui->newDeviceNameLiEd->text());
+        newHeater->setDeviceIP(address);
+        m_unitHVAC()->addHeater(newHeater);
     }
-    qDebug() << "Dodajemy item";
     item->setText(ui->newDeviceNameLiEd->text());
-    qDebug() << ui->newDeviceNameLiEd->text();
     ui->devicesHVAClistWidget->addItem(item);
     ui->devicesHVAClistWidget->update();
 }
@@ -75,20 +76,18 @@ Device* HVACWidget::searchDevice(QString deviceName){
     if(deviceName == m_unitHVAC()->getThermostat()->getName()){
         selectedDevice =m_unitHVAC()->getThermostat();
     }
-
-    for (AC* device : m_unitHVAC()->getDevicesAC()) {
-        qDebug() << device->getName();
-        if (device->getName() == deviceName) {
-            selectedDevice = device;
-            qDebug() << selectedDevice->getName();
-            break;
+    else{
+        for (AC* device : m_unitHVAC()->getDevicesAC()) {
+            if (device->getName() == deviceName) {
+                selectedDevice = device;
+                break;
+            }
         }
-    }
-    for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
-        if (device->getName() == deviceName) {
-            selectedDevice = device;
-            qDebug() << selectedDevice->getName();
-            break;
+        for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
+            if (device->getName() == deviceName) {
+                selectedDevice = device;
+                break;
+            }
         }
     }
     return selectedDevice;
@@ -97,9 +96,12 @@ Device* HVACWidget::searchDevice(QString deviceName){
 void HVACWidget::on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item)
 {
     Device *device = searchDevice(item->text());
-    ui->deviceNameFromListLabel->setText(device->getName());
-        qDebug() << "Dotarło";
-    ui->deviceIpFromListLabel->setText(device->getDeviceIP().toString());
-    ui->deviceStatusFromListLabel->setText(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF");
+    if(device != nullptr){
+        ui->deviceNameFromListLabel->setText(device->getName());
+        ui->deviceIpFromListLabel->setText(device->getDeviceIP().toString());
+        ui->deviceStatusFromListLabel->setText(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF");
+    }
+
 }
+
 

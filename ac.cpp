@@ -38,9 +38,11 @@ void AC::onUIToggle()
 void AC::onTurnAC_ON(){
     setStatus(DeviceStatus::ON);
     emit heaterToggled(false);
+    qDebug() << "AC włączone";
 }
 
 void AC::onTurnAC_OFF(){
     setStatus(DeviceStatus::OFF);
     emit heaterToggled(false);
+    qDebug() << "AC wyłączone";
 }

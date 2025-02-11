@@ -24,6 +24,9 @@ private:
     QList<AC*> devicesAC;
     QList<Heater*> devicesHeater;
 
+public slots:
+
+
 signals:
     void turnACs_ON();
     void turnACs_OFF();

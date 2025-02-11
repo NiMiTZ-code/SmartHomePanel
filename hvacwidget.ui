@@ -25,210 +25,173 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QScrollArea" name="scrollArea">
-   <property name="geometry">
-    <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>281</width>
-     <height>411</height>
-    </rect>
-   </property>
-   <property name="widgetResizable">
-    <bool>true</bool>
-   </property>
-   <widget class="QWidget" name="scrollAreaWidgetContents">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>279</width>
-      <height>409</height>
-     </rect>
-    </property>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>281</width>
-       <height>411</height>
-      </rect>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>6</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-        </property>
-        <item>
-         <widget class="QLabel" name="deviceNameLabel">
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="deviceStatusLabel">
-          <property name="text">
-           <string>Status</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="deviceIpLabel">
-          <property name="text">
-           <string>IP</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Set temperature:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="setTemperatureBox"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="setTemperatureButton">
-          <property name="text">
-           <string>Set</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Temperature</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="temperatureLabel">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QListWidget" name="devicesHVAClistWidget">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>50</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="QLabel" name="deviceNameFromListLabel">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="deviceStatusFromListLabel">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="deviceIpFromListLabel">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <property name="bottomMargin">
-         <number>6</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>New name:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="newDeviceNameLiEd"/>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>New IP:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="newDeviceIpLiEd"/>
-        </item>
-        <item>
-         <widget class="QComboBox" name="newDeviceTypeCoBox">
-          <item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QLabel" name="deviceNameLabel">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="deviceStatusLabel">
+         <property name="text">
+          <string>Status</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="deviceIpLabel">
+         <property name="text">
+          <string>IP</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Set temperature:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="setTemperatureBox"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="setTemperatureButton">
+         <property name="text">
+          <string>Set</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="temperatureLabel">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QListWidget" name="devicesHVAClistWidget">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>50</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="deviceNameFromListLabel">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="deviceStatusFromListLabel">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="deviceIpFromListLabel">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>AC</string>
+            <string>New name:</string>
            </property>
-          </item>
-          <item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="newDeviceNameLiEd"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>Heater</string>
+            <string>New IP:</string>
            </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="addHVACdeviceButton">
-        <property name="text">
-         <string>Add HVAC device</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Policy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>100</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-  </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="newDeviceIpLiEd"/>
+         </item>
+         <item>
+          <widget class="QComboBox" name="newDeviceTypeCoBox">
+           <item>
+            <property name="text">
+             <string>AC</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Heater</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addHVACdeviceButton">
+       <property name="text">
+        <string>Add HVAC device</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

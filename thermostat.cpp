@@ -34,6 +34,8 @@ void Thermostat::setTemperatureSetting(float temp)
     } else {
         status = DeviceStatus::ERROR;
     }
+    qDebug() << "Thermostat tempreture setting changed!";
+    performAction();
 }
 
 void Thermostat::setTemperatureReading(float temp)
@@ -43,6 +45,7 @@ void Thermostat::setTemperatureReading(float temp)
     } else {
         status = DeviceStatus::ERROR;
     }
+    performAction();
 }
 
 void Thermostat::chngTempSetting()
@@ -61,9 +64,11 @@ void Thermostat::performAction()
 {
     if(getTemperatureReading() > getTemperatureSetting()){
         //turn on AC
+        emit turnHVACs_OFF();
         emit turnAC_ON();
     }else if(getTemperatureReading() < getTemperatureSetting()){
         //turn on heater
+        emit turnHVACs_OFF();
         emit turnHeater_ON();
     }else{
         //turn devices off
