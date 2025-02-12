@@ -2,6 +2,7 @@
 #define NEWDEVICEWINDOW_H
 
 #include <QDialog>
+#include <QHostAddress>
 
 namespace Ui {
 class newdevicewindow;

@@ -11,6 +11,14 @@ HVACWidget::HVACWidget(HVAC* unitHVAC, QWidget *parent)
     connect(this,&HVACWidget::sendTemperature,unitHVAC->getThermostat(),&Thermostat::setTemperatureSetting);
     listHVACdevices();
     updateUI();
+    ui->newDeviceNameLiEd->setPlaceholderText("Kitchen device");
+
+    QString ipRange = R"((?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]))";
+    QRegularExpression ipRegex ("^" + ipRange + "(\\." + ipRange + ")" + "(\\." + ipRange + ")" + "(\\." + ipRange + ")$");
+    QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex,this);
+    ui->newDeviceIpLiEd->setValidator(ipValidator);
+    ui->newDeviceIpLiEd->setPlaceholderText("192.168.1.2");
+    ui->addHVACdeviceButton->hide();
 }
 
 HVACWidget::~HVACWidget()
@@ -21,7 +29,7 @@ HVACWidget::~HVACWidget()
 void HVACWidget::updateUI() {
     ui->deviceStatusLabel->setText(QString("Status: %1")
                                        .arg(m_unitHVAC()->getStatus() == DeviceStatus::ON ? "ON" : "OFF"));
-    ui->temperatureLabel->setText(QString::number(m_unitHVAC()->getThermostat()->getTemperatureReading()));
+    ui->temperatureLabel->setText(QString::number(m_unitHVAC()->getThermostat()->getTemperatureReading())+ "°C");
 }
 void HVACWidget::onTemperatureChange(){
     updateUI();
@@ -53,13 +61,11 @@ void HVACWidget::on_addHVACdeviceButton_clicked()
     address.setAddress(ui->newDeviceIpLiEd->text());
     QListWidgetItem *item = new QListWidgetItem;
     if(ui->newDeviceTypeCoBox->currentIndex() == 0){
-        qDebug() << "Dodawanie urządzenia AC";
         AC* newAC = new AC;
         newAC->setDeviceName(ui->newDeviceNameLiEd->text());
         newAC->setDeviceIP(address);
         m_unitHVAC()->addAC(newAC);
     } else {
-        qDebug() << "Dodawanie urządzenia Heater";
         Heater* newHeater = new Heater;
         newHeater->setDeviceName(ui->newDeviceNameLiEd->text());
         newHeater->setDeviceIP(address);
@@ -68,6 +74,9 @@ void HVACWidget::on_addHVACdeviceButton_clicked()
     item->setText(ui->newDeviceNameLiEd->text());
     ui->devicesHVAClistWidget->addItem(item);
     ui->devicesHVAClistWidget->update();
+    ui->newDeviceNameLiEd->clear();
+    ui->newDeviceIpLiEd->clear();
+    ui->addHVACdeviceButton->hide();
 }
 
 Device* HVACWidget::searchDevice(QString deviceName){
@@ -104,4 +113,43 @@ void HVACWidget::on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item)
 
 }
 
+void HVACWidget::newDeviceNameAndIpOK(){
+    Device* device = nullptr;
+    device = searchDevice(ui->newDeviceNameLiEd->text());
+    QHostAddress address;
+    address.setAddress(ui->newDeviceIpLiEd->text());
+    if(!ui->newDeviceNameLiEd->text().isEmpty() && device == nullptr && ui->newDeviceIpLiEd->hasAcceptableInput() && checkIfIpNotInUse(address)){
+        ui->addHVACdeviceButton->show();
+    } else{
+        ui->addHVACdeviceButton->hide();
+    }
 
+}
+
+void HVACWidget::on_newDeviceNameLiEd_textEdited(const QString &arg1)
+{
+    newDeviceNameAndIpOK();
+}
+
+
+void HVACWidget::on_newDeviceIpLiEd_textEdited(const QString &arg1)
+{
+    newDeviceNameAndIpOK();
+}
+
+bool HVACWidget::checkIfIpNotInUse(QHostAddress address){
+    if(address == m_unitHVAC()->getThermostat()->getDeviceIP()) {
+        return false;
+    }
+        for (AC* device : m_unitHVAC()->getDevicesAC()) {
+            if (device->getDeviceIP() == address) {
+                return false;
+            }
+        }
+        for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
+            if (device->getDeviceIP() == address) {
+                return false;
+            }
+        }
+    return true;
+}
