@@ -31,12 +31,22 @@ private slots:
     void on_thermostatNameliEd_textEdited(const QString &arg1);
 
     void on_thermostatIpLiEd_textEdited(const QString &arg1);
+public slots:
+
+    void on_newDeviceNameOK();
+
+    void on_newDeviceIpOK();
 
 private:
     Ui::newdevicewindow *ui;
     void newDeviceNameAndIpOK();
     void newThermostatNameAndIpOK();
-    bool checkIfIpNotInUse(QHostAddress address);
+    //bool checkIfIpNotInUse(QHostAddress address);
+    bool newDeviceNameOK = false;
+    bool newDeviceIpOK = false;
+    bool newThermostatNameOK = false;
+    bool newThermostatIpOK = false;
+    void checkIfInputsOK();
 
 
 signals:

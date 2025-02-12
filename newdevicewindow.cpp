@@ -6,12 +6,6 @@ newdevicewindow::newdevicewindow(QWidget *parent)
     , ui(new Ui::newdevicewindow)
 {
     ui->setupUi(this);
-
-}
-
-newdevicewindow::~newdevicewindow()
-{
-    delete ui;
     QString ipRange = R"((?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]))";
     QRegularExpression ipRegex ("^" + ipRange + "(\\." + ipRange + ")" + "(\\." + ipRange + ")" + "(\\." + ipRange + ")$");
     QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex,this);
@@ -21,6 +15,12 @@ newdevicewindow::~newdevicewindow()
     ui->thermostatIpLiEd->setPlaceholderText("192.168.1.4");
     ui->deviceIPLnEdit->setValidator(ipValidator);
     ui->thermostatIpLiEd->setValidator(ipValidator);
+    ui->buttonBox->hide();
+}
+
+newdevicewindow::~newdevicewindow()
+{
+    delete ui;
 }
 
 QString newdevicewindow::getDeviceName(){
@@ -80,4 +80,20 @@ void newdevicewindow::on_thermostatNameliEd_textEdited(const QString &arg1)
 void newdevicewindow::on_thermostatIpLiEd_textEdited(const QString &arg1)
 {
 
+}
+
+void newdevicewindow::on_newDeviceNameOK(){
+    newDeviceNameOK = true;
+}
+
+void newdevicewindow::on_newDeviceIpOK(){
+    newDeviceIpOK = true;
+}
+
+void newdevicewindow::checkIfInputsOK(){
+    qDebug() <<&"IP OK: " [ newDeviceIpOK];
+    qDebug() << &"Name OK:" [ newDeviceNameOK];
+    if(newDeviceNameOK && newDeviceIpOK){
+        ui->buttonBox->show();
+    }
 }

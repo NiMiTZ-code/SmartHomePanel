@@ -75,6 +75,8 @@ void MainWindow::on_addDeviceButton_clicked()
     addDeviceWindow = new newdevicewindow(this);
     connect(addDeviceWindow,&newdevicewindow::newDeviceNameCheck,this,&MainWindow::on_newDeviceNameCheck);
     connect(addDeviceWindow,&newdevicewindow::newDeviceIpcheck,this,&MainWindow::on_newDeviceIpCheck);
+    connect(this,&MainWindow::newDeviceNameOK,addDeviceWindow,&newdevicewindow::on_newDeviceNameOK);
+    connect(this,&MainWindow::newDeviceIpOK,addDeviceWindow,&newdevicewindow::on_newDeviceIpOK);
     int result = addDeviceWindow->exec();
     QHostAddress adres;
     Device* newDevice = nullptr;  // Base pointer for any device type
@@ -210,7 +212,7 @@ void MainWindow::on_newDeviceNameCheck(QString name){
     Device* newDevice = nullptr;
     newDevice = searchForDevice(name);
     if(newDevice == nullptr){
-        emit newDeviceNameOK(true);
+        emit newDeviceNameOK();
     }
 }
 
@@ -223,6 +225,6 @@ void MainWindow::on_newDeviceIpCheck(QHostAddress* ip){
             }
         }
         if(newDevice == nullptr){
-            emit newDeviceIpOK(true);
+            emit newDeviceIpOK();
         }
 }

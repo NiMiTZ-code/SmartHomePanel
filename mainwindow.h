@@ -46,10 +46,13 @@ private:
     void removeDeviceCard(Device* device);
 
 
-protected:
 
 private slots:
     void on_addDeviceButton_clicked();
     void addDeviceCard(Device* device);
+
+signals:
+    void newDeviceNameOK();
+    void newDeviceIpOK();
 };
 #endif // MAINWINDOW_H
