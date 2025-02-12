@@ -73,6 +73,8 @@ void MainWindow::updateWeatherData(){
 void MainWindow::on_addDeviceButton_clicked()
 {
     addDeviceWindow = new newdevicewindow(this);
+    connect(addDeviceWindow,&newdevicewindow::newDeviceNameCheck,this,&MainWindow::on_newDeviceNameCheck);
+    connect(addDeviceWindow,&newdevicewindow::newDeviceIpcheck,this,&MainWindow::on_newDeviceIpCheck);
     int result = addDeviceWindow->exec();
     QHostAddress adres;
     Device* newDevice = nullptr;  // Base pointer for any device type
@@ -204,4 +206,23 @@ void MainWindow::removeDeviceCard(Device *device)
     }
 }
 
+void MainWindow::on_newDeviceNameCheck(QString name){
+    Device* newDevice = nullptr;
+    newDevice = searchForDevice(name);
+    if(newDevice == nullptr){
+        emit newDeviceNameOK(true);
+    }
+}
 
+void MainWindow::on_newDeviceIpCheck(QHostAddress* ip){
+    Device* newDevice = nullptr;
+        for (Device* device : networkHandler->getDevices()) {
+            if (device->getDeviceIP() == *ip) {
+                newDevice = device;
+                break;
+            }
+        }
+        if(newDevice == nullptr){
+            emit newDeviceIpOK(true);
+        }
+}
