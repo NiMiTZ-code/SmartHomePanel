@@ -2,6 +2,7 @@
 #define NEWDEVICEWINDOW_H
 
 #include <QDialog>
+#include <QHostAddress>
 
 namespace Ui {
 class newdevicewindow;
@@ -17,6 +18,11 @@ public:
     QString getDeviceName();
     QString getDeviceIP();
     int getDeviceType();
+    QString getThermostatName();
+    QString getThermostatIP();
+
+private slots:
+    void on_deviceTypecBox_activated(int index);
 
 private:
     Ui::newdevicewindow *ui;

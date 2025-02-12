@@ -4,8 +4,8 @@
 #include <QWidget>
 #include "devicewidget.h"
 #include "hvac.h"
-#include "ac.h"
-#include "heater.h"
+#include "QListWidgetItem"
+#include <QRegularExpression>
 
 namespace Ui {
 class HVACWidget;
@@ -25,7 +25,9 @@ private:
     HVAC* m_unitHVAC() {return qobject_cast<HVAC*>(m_device);}
 
     void listHVACdevices();
-
+    Device* searchDevice(QString deviceName);
+    void newDeviceNameAndIpOK();
+    bool checkIfIpNotInUse(QHostAddress address);
 public slots:
     void onTemperatureChange();
 
@@ -34,6 +36,13 @@ private slots:
     void on_setTemperatureButton_clicked();
 
     void on_addHVACdeviceButton_clicked();
+
+    void on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item);
+
+    void on_newDeviceNameLiEd_textEdited(const QString &arg1);
+
+    void on_newDeviceIpLiEd_textEdited(const QString &arg1);
+
 
 signals:
     void sendTemperature(float temperature);

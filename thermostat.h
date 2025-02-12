@@ -9,7 +9,7 @@ private:
     const float LOWEST_TEMP = -10.0F;
     const float HIGHEST_TEMP = 50.0F;
     float temperatureSetting;
-    float temperatureReading;
+    float temperatureReading = 20;
 
     void performAction();
     //agregate heater and AC?
