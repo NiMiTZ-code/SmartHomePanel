@@ -22,7 +22,7 @@ public:
 
 private:
     Ui::HVACWidget *ui;
-    HVAC* m_unitHVAC() {return qobject_cast<HVAC*>(m_device);}
+    HVAC* m_unitHVAC() { return qobject_cast<HVAC*>(m_device);}
 
     void listHVACdevices();
     Device* searchDevice(QString deviceName);

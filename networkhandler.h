@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QUdpSocket>
 #include <QList>
-
+#include <QTcpSocket>
 #include "device.h"
 
-class NetworkHandler: public QObject
+class NetworkHandler : public QObject
 {
     Q_OBJECT
 private:
@@ -20,10 +20,9 @@ private:
 public:
     explicit NetworkHandler(QObject *parent = nullptr);
     ~NetworkHandler();
-    //QList<Device*> m_devices; było do testowania listy
     void registerDevice(Device* device);
     void unregisterDevice(Device* device);
-    static NetworkHandler* getInstance(); //singletgon
+    static NetworkHandler* getInstance();
 
     QList<Device*> getDevices();
 
