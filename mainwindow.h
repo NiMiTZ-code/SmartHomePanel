@@ -8,17 +8,7 @@
 #include "weatherstation.h"
 #include "device.h"
 #include <QMap>
-//#include <QTimer>
-//#include <QDateTime>
-//#include <QCoreApplication>
-//#include <QNetworkAccessManager>
-//#include <QNetworkRequest>
-//#include <QNetworkReply>
-//#include <QJsonDocument>
-//#include <QJsonObject>
-//#include <QJsonArray>
-//#include <QJsonValue>
-//#include <QDebug>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -39,6 +29,16 @@ public slots:
     void setTime();
     void setWeatherData();
     void updateWeatherData();
+    void on_newDeviceNameCheck(QString name);
+    void on_newDeviceIpCheck(QHostAddress *ip);
+    void on_newThermostatNameCheck(QString name);
+    void on_newThermostatIpCheck(QHostAddress *ip);
+    void on_searchDevicesNameInNetworkHandler(QString name);
+    void on_searchDevicesIpInNetworkHandler(QHostAddress *ip);
+    void on_checkIfIpNotInHVACDevices(QHostAddress *ip);
+    void on_ipNotInHVACDevices();
+    void on_hvacWidgetCreation();
+
 private:
     Ui::MainWindow *ui;
     QMap<Device*, QFrame*> deviceCards;
@@ -52,10 +52,26 @@ private:
 
     Device* searchForDevice(QString deviceName);
     void removeDeviceCard(Device* device);
-protected:
+    bool hvacWidgetCreated = false;
+
+
 
 private slots:
     void on_addDeviceButton_clicked();
     void addDeviceCard(Device* device);
+
+    void on_miasctoCoBox_currentIndexChanged(int index);
+
+signals:
+    void newDeviceNameOK();
+    void newDeviceIpOK();
+    void newThermostatNameOK();
+    void newThermostatIpOK();
+    void hvacDeviceNameOK();
+    void hvacDeviceIpOK();
+    void checkIfIpNotInHVACDevices(QHostAddress *ip);
+    void ipNotInHVACDevices();
+    void hvacWidgetCreation();
+
 };
 #endif // MAINWINDOW_H

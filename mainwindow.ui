@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Smart Home Panel</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -223,6 +223,65 @@
              <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QComboBox" name="miasctoCoBox">
+               <item>
+                <property name="text">
+                 <string>Katowice</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Warszawa</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Kraków</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Wrocław</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Łódź</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Poznań</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Gdańsk</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Szczecin</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Lublin</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Bydgoszcz</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Białystok</string>
+                </property>
+               </item>
+              </widget>
+             </item>
              <item>
               <widget class="QPushButton" name="addDeviceButton">
                <property name="text">
