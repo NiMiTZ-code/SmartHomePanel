@@ -77,6 +77,16 @@ void MainWindow::on_addDeviceButton_clicked()
     connect(addDeviceWindow,&newdevicewindow::newDeviceIpcheck,this,&MainWindow::on_newDeviceIpCheck);
     connect(this,&MainWindow::newDeviceNameOK,addDeviceWindow,&newdevicewindow::on_newDeviceNameOK);
     connect(this,&MainWindow::newDeviceIpOK,addDeviceWindow,&newdevicewindow::on_newDeviceIpOK);
+    connect(addDeviceWindow,&newdevicewindow::newThermostatNameCheck,this,&MainWindow::on_newThermostatNameCheck);
+    connect(addDeviceWindow,&newdevicewindow::newThermostatIpCheck,this,&MainWindow::on_newThermostatIpCheck);
+    connect(this,&MainWindow::newThermostatNameOK,addDeviceWindow,&newdevicewindow::on_newThermostatNameOK);
+    connect(this,&MainWindow::newThermostatIpOK,addDeviceWindow,&newdevicewindow::on_newThermostatIpOK);
+    connect(addDeviceWindow,&newdevicewindow::checkIfIpNotInHVACDevices,this,&MainWindow::on_checkIfIpNotInHVACDevices);
+    connect(this,&MainWindow::ipNotInHVACDevices,addDeviceWindow,&newdevicewindow::on_deviceIpNotInUse);
+    connect(this,&MainWindow::hvacWidgetCreation,addDeviceWindow,&newdevicewindow::on_HVACWidgetCreation);
+    if(hvacWidgetCreated){
+        emit hvacWidgetCreation();
+    }
     int result = addDeviceWindow->exec();
     QHostAddress adres;
     Device* newDevice = nullptr;  // Base pointer for any device type
@@ -146,16 +156,15 @@ void MainWindow::addDeviceCard(Device *device)
     }
     else if(auto hvac = qobject_cast<HVAC*>(device)) {
         deviceWidget = new HVACWidget(hvac,deviceCard);
+        connect(qobject_cast<HVACWidget*>(deviceWidget), &HVACWidget::searchDevicesNameInNetworkHandler,this,&MainWindow::on_searchDevicesNameInNetworkHandler);
+        connect(qobject_cast<HVACWidget*>(deviceWidget),&HVACWidget::searchDevicesIpInNetworkHandler, this, &MainWindow::on_searchDevicesIpInNetworkHandler);
+        connect(this,&MainWindow::hvacDeviceNameOK,qobject_cast<HVACWidget*>(deviceWidget),&HVACWidget::on_hvacDeviceNameOK);
+        connect(this,&MainWindow::hvacDeviceIpOK,qobject_cast<HVACWidget*>(deviceWidget), &HVACWidget::on_hvacDeviceIpOK);
+        connect(this,&MainWindow::checkIfIpNotInHVACDevices,qobject_cast<HVACWidget*>(deviceWidget),&::HVACWidget::on_checkIfIpNotInHVACDevices);
+        connect(qobject_cast<HVACWidget*>(deviceWidget),&HVACWidget::ipNotInHVACDevices,this,&MainWindow::on_ipNotInHVACDevices);
+        connect(qobject_cast<HVACWidget*>(deviceWidget),&HVACWidget::widgetCreation,this,&MainWindow::on_hvacWidgetCreation);
+        hvacWidgetCreated = true;
     }
-    // else if(auto ac = qobject_cast<AC*>(device)) {
-    //     deviceWidget = new ACWidget(ac, deviceCard);
-    // }
-    // else if(auto heater = qobject_cast<Heater*>(device)) {
-    //     deviceWidget = new HeaterWidget(heater, deviceCard);
-    // }
-    // else if(auto thermostat = qobject_cast<Thermostat*>(device)) {
-    //     deviceWidget = new ThermostatWidget(thermostat, deviceCard);
-    // }
     if(deviceWidget){
         connect(deviceWidget, &DeviceWidget::removalRequested, this, &MainWindow::removeDeviceCard);
         layout->addWidget(deviceWidget);
@@ -209,14 +218,17 @@ void MainWindow::removeDeviceCard(Device *device)
 }
 
 void MainWindow::on_newDeviceNameCheck(QString name){
+        qDebug() << "Sprawdzan nazwe";
     Device* newDevice = nullptr;
     newDevice = searchForDevice(name);
     if(newDevice == nullptr){
         emit newDeviceNameOK();
+        //qDebug() << "Emituję sygnał, nazwa ok";
     }
 }
 
 void MainWindow::on_newDeviceIpCheck(QHostAddress* ip){
+   // qDebug() << "Sprawdzam ip";
     Device* newDevice = nullptr;
         for (Device* device : networkHandler->getDevices()) {
             if (device->getDeviceIP() == *ip) {
@@ -226,5 +238,67 @@ void MainWindow::on_newDeviceIpCheck(QHostAddress* ip){
         }
         if(newDevice == nullptr){
             emit newDeviceIpOK();
+            //qDebug() << "Emituję sygnał, ip ok";
         }
+}
+
+void MainWindow::on_newThermostatNameCheck(QString name){
+    //qDebug() << "Sprawdzam nazwę thermostatu";
+    Device* newDevice = nullptr;
+    newDevice = searchForDevice(name);
+    if(newDevice == nullptr){
+        emit newThermostatNameOK();
+        //qDebug() << "Emituję sygnał, nazwa thermostat ok";
+    }
+}
+
+void MainWindow::on_newThermostatIpCheck(QHostAddress* ip){
+    //qDebug() << "Sprawdzam ip thermostatu";
+    Device* newDevice = nullptr;
+    for (Device* device : networkHandler->getDevices()) {
+        if (device->getDeviceIP() == *ip) {
+            newDevice = device;
+            break;
+        }
+    }
+    if(newDevice == nullptr){
+        emit newThermostatIpOK();
+        //qDebug() << "Emituję sygnał, ip thermostat ok";
+    }
+}
+
+void MainWindow::on_searchDevicesNameInNetworkHandler(QString name){
+    Device * device = nullptr;
+    device = searchForDevice(name);
+    if(device == nullptr){
+        emit hvacDeviceNameOK();
+    }
+}
+
+void MainWindow::on_searchDevicesIpInNetworkHandler(QHostAddress *ip){
+    Device* sdevice = nullptr;
+    for(Device * device : networkHandler->getDevices()){
+        if(device->getDeviceIP() == *ip){
+            qDebug() << device->getDeviceIP();
+            sdevice = device;
+        }
+    }
+    if(sdevice == nullptr){
+        emit hvacDeviceIpOK();
+    }
+}
+
+void MainWindow::on_checkIfIpNotInHVACDevices(QHostAddress *ip){
+    qDebug() << "Jestesmy w mainwindow";
+    emit checkIfIpNotInHVACDevices(ip);
+}
+
+void MainWindow::on_ipNotInHVACDevices(){
+    qDebug() << "znowu jestem w mainwidow";
+    emit ipNotInHVACDevices();
+}
+
+void MainWindow::on_hvacWidgetCreation(){
+    qDebug() <<"WWWWWWW mainie info o utowrzeniu widgeta";
+    emit hvacWidgetCreation();
 }

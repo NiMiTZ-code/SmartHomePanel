@@ -59,41 +59,131 @@ QString newdevicewindow::getThermostatIP(){
 
 void newdevicewindow::on_deviceNameLnEdit_textEdited(const QString &arg1)
 {
-        emit newDeviceNameCheck(arg1);
+    if(!ui->deviceNameLnEdit->text().isEmpty()){
+        if(ui->deviceTypecBox->currentIndex() != 0){
+            newThermostatNameOK = true;
+            emit newDeviceNameCheck(arg1);
+        } else {
+            emit newDeviceNameCheck(arg1);
+        }
+    } else {
+        ui->buttonBox->hide();
+    }
 }
 
 
 void newdevicewindow::on_deviceIPLnEdit_textEdited(const QString &arg1)
 {
-    QHostAddress *address = new QHostAddress;
-    address->setAddress(arg1);
-    emit newDeviceIpcheck(address);
+    if(ui->deviceIPLnEdit->hasAcceptableInput() && ui->deviceIPLnEdit->text() == "127.0.0.1"){
+        newDeviceIpOK = true;
+        if(ui->deviceTypecBox->currentIndex() != 0){
+            newThermostatIpOK = true;
+        }
+        checkIfInputsOK();
+    } else{
+        if(ui->deviceIPLnEdit->hasAcceptableInput()){
+            QHostAddress *address = new QHostAddress;
+            address->setAddress(arg1);
+            qDebug() <<"Sprawdzam czy w hvacu";
+            emit checkIfIpNotInHVACDevices(address);
+            if(ui->deviceTypecBox->currentIndex() != 0){
+                newThermostatIpOK = true;
+                emit newDeviceIpcheck(address);
+            }
+            else {
+                if( ui->deviceIPLnEdit->text() != ui->thermostatIpLiEd->text()){
+                    emit newDeviceIpcheck(address);
+                }
+            }
+        } else{
+            ui->buttonBox->hide();
+        }
+    }
+
 }
 
 
 void newdevicewindow::on_thermostatNameliEd_textEdited(const QString &arg1)
 {
-
+    if(ui->deviceTypecBox->currentIndex() == 0){
+        if(!ui->thermostatNameliEd->text().isEmpty()){
+            emit newThermostatNameCheck(arg1);
+        }
+    }
 }
 
 
 void newdevicewindow::on_thermostatIpLiEd_textEdited(const QString &arg1)
 {
 
+    if(ui->deviceTypecBox->currentIndex() == 0){
+        if(ui->thermostatIpLiEd->hasAcceptableInput() && !ui->thermostatIpLiEd->text().isEmpty()){
+            if(ui->thermostatIpLiEd->text() != ui->deviceIPLnEdit->text()){
+                QHostAddress *address = new QHostAddress;
+                address->setAddress(arg1);
+                qDebug() << "Emituję sprawdz ip thermostatu";
+                emit newThermostatIpCheck(address);
+            }
+            else if(ui->thermostatIpLiEd->text() == "127.0.0.1"){
+                qDebug() <<"Dociera" + ui->thermostatIpLiEd->text();
+                newThermostatIpOK = true;
+                checkIfInputsOK();
+            }
+        }
+
+        else{
+            ui->buttonBox->hide();
+        }
+    }
 }
 
 void newdevicewindow::on_newDeviceNameOK(){
     newDeviceNameOK = true;
+    checkIfInputsOK();
 }
 
 void newdevicewindow::on_newDeviceIpOK(){
     newDeviceIpOK = true;
+    checkIfInputsOK();
 }
 
 void newdevicewindow::checkIfInputsOK(){
-    qDebug() <<&"IP OK: " [ newDeviceIpOK];
-    qDebug() << &"Name OK:" [ newDeviceNameOK];
-    if(newDeviceNameOK && newDeviceIpOK){
+    qDebug() <<"Name OK: ";
+    qDebug() << newDeviceNameOK;
+    qDebug() << "Ip OK:" ;
+    qDebug() << newDeviceIpOK;
+    qDebug() << "Thermostat name ok";
+    qDebug() << newThermostatNameOK;
+    qDebug() << "Thermostat ip ok";
+    qDebug() << newThermostatIpOK;
+    qDebug() <<"Not in hvac";
+    qDebug() << ipNotUsedByHvacDevices;
+
+    if(newDeviceNameOK && newDeviceIpOK && newThermostatNameOK && newThermostatIpOK && ipNotUsedByHvacDevices ){
         ui->buttonBox->show();
+        ipNotUsedByHvacDevices = false; //tu
+
+    } else {
+        ui->buttonBox->hide();
     }
+}
+
+void newdevicewindow::on_newThermostatNameOK(){
+    newThermostatNameOK = true;
+    checkIfInputsOK();
+}
+
+void newdevicewindow::on_newThermostatIpOK(){
+    newThermostatIpOK = true;
+    checkIfInputsOK();
+}
+
+void newdevicewindow::on_deviceIpNotInUse(){
+    qDebug() << "Dotarlismy";
+    ipNotUsedByHvacDevices = true;
+}
+
+void newdevicewindow::on_HVACWidgetCreation() {
+    qDebug() << "HVAC WIDGET CREATED";
+    ipNotUsedByHvacDevices = false;
 }

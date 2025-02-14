@@ -28,8 +28,13 @@ private:
     Device* searchDevice(QString deviceName);
     void newDeviceNameAndIpOK();
     bool checkIfIpNotInUse(QHostAddress address);
+    bool hvacDeviceNameOK = false;
+    bool hvacDeviceIpOK = false;
 public slots:
     void onTemperatureChange();
+    void on_hvacDeviceNameOK();
+    void on_hvacDeviceIpOK();
+    void on_checkIfIpNotInHVACDevices(QHostAddress *ip);
 
 private slots:
 
@@ -46,6 +51,10 @@ private slots:
 
 signals:
     void sendTemperature(float temperature);
+    QString searchDevicesNameInNetworkHandler(QString name);
+    void searchDevicesIpInNetworkHandler(QHostAddress *ip);
+    void ipNotInHVACDevices();
+    void widgetCreation();
 };
 
 #endif // HVACWIDGET_H

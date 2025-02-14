@@ -37,6 +37,14 @@ public slots:
 
     void on_newDeviceIpOK();
 
+    void on_newThermostatNameOK();
+
+    void on_newThermostatIpOK();
+
+    void on_deviceIpNotInUse();
+
+    void on_HVACWidgetCreation();
+
 private:
     Ui::newdevicewindow *ui;
     void newDeviceNameAndIpOK();
@@ -47,11 +55,15 @@ private:
     bool newThermostatNameOK = false;
     bool newThermostatIpOK = false;
     void checkIfInputsOK();
+    bool ipNotUsedByHvacDevices = true;
 
 
 signals:
     QString newDeviceNameCheck(QString name);
     QHostAddress newDeviceIpcheck(QHostAddress *ip);
+    QString newThermostatNameCheck(QString name);
+    QHostAddress newThermostatIpCheck(QHostAddress *ip);
+    void checkIfIpNotInHVACDevices(QHostAddress *ip);
 
 };
 

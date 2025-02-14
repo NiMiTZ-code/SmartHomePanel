@@ -19,6 +19,7 @@ HVACWidget::HVACWidget(HVAC* unitHVAC, QWidget *parent)
     ui->newDeviceIpLiEd->setValidator(ipValidator);
     ui->newDeviceIpLiEd->setPlaceholderText("192.168.1.2");
     ui->addHVACdeviceButton->hide();
+    emit widgetCreation();
 }
 
 HVACWidget::~HVACWidget()
@@ -77,6 +78,8 @@ void HVACWidget::on_addHVACdeviceButton_clicked()
     ui->newDeviceNameLiEd->clear();
     ui->newDeviceIpLiEd->clear();
     ui->addHVACdeviceButton->hide();
+    hvacDeviceNameOK = false;
+    hvacDeviceIpOK = false;
 }
 
 Device* HVACWidget::searchDevice(QString deviceName){
@@ -104,6 +107,7 @@ Device* HVACWidget::searchDevice(QString deviceName){
 
 void HVACWidget::on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item)
 {
+    emit widgetCreation();
     Device *device = searchDevice(item->text());
     if(device != nullptr){
         ui->deviceNameFromListLabel->setText(device->getName());
@@ -114,16 +118,21 @@ void HVACWidget::on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item)
 }
 
 void HVACWidget::newDeviceNameAndIpOK(){
+
     Device* device = nullptr;
     device = searchDevice(ui->newDeviceNameLiEd->text());
     QHostAddress address;
     address.setAddress(ui->newDeviceIpLiEd->text());
-    if(!ui->newDeviceNameLiEd->text().isEmpty() && device == nullptr && ui->newDeviceIpLiEd->hasAcceptableInput() && checkIfIpNotInUse(address)){
-        ui->addHVACdeviceButton->show();
-    } else{
-        ui->addHVACdeviceButton->hide();
+    if(ui->newDeviceIpLiEd->hasAcceptableInput()){
+        emit searchDevicesNameInNetworkHandler(ui->newDeviceNameLiEd->text());
+        emit searchDevicesIpInNetworkHandler(&address);
+        qDebug() <<hvacDeviceIpOK;
+        if(!ui->newDeviceNameLiEd->text().isEmpty() && device == nullptr && ui->newDeviceIpLiEd->hasAcceptableInput() && checkIfIpNotInUse(address) && hvacDeviceNameOK && hvacDeviceIpOK){
+            ui->addHVACdeviceButton->show();
+        } else{
+            ui->addHVACdeviceButton->hide();
+        }
     }
-
 }
 
 void HVACWidget::on_newDeviceNameLiEd_textEdited(const QString &arg1)
@@ -134,6 +143,8 @@ void HVACWidget::on_newDeviceNameLiEd_textEdited(const QString &arg1)
 
 void HVACWidget::on_newDeviceIpLiEd_textEdited(const QString &arg1)
 {
+
+    hvacDeviceIpOK = false; //tu
     newDeviceNameAndIpOK();
 }
 
@@ -152,4 +163,21 @@ bool HVACWidget::checkIfIpNotInUse(QHostAddress address){
             }
         }
     return true;
+}
+
+void HVACWidget::on_hvacDeviceNameOK(){
+    hvacDeviceNameOK = true;
+}
+
+void HVACWidget::on_hvacDeviceIpOK(){
+    hvacDeviceIpOK = true;
+}
+
+void HVACWidget::on_checkIfIpNotInHVACDevices(QHostAddress *ip){
+    bool notInUse =checkIfIpNotInUse(*ip);
+    qDebug() << " Ip Not in use";
+    qDebug() << notInUse;
+    if(notInUse){
+        emit ipNotInHVACDevices();
+    }
 }
