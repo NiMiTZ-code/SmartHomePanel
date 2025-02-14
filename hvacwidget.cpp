@@ -1,21 +1,23 @@
 #include "hvacwidget.h"
 #include "ui_hvacwidget.h"
+#include "networkhandler.h"  // Dodajemy NetworkHandler
 
 HVACWidget::HVACWidget(HVAC* unitHVAC, QWidget *parent)
-    : DeviceWidget(unitHVAC,parent), ui(new Ui::HVACWidget)
+    : DeviceWidget(unitHVAC, parent), ui(new Ui::HVACWidget)
 {
     ui->setupUi(this);
     ui->deviceNameLabel->setText(unitHVAC->getName());
     ui->deviceIpLabel->setText("IP: " + unitHVAC->getDeviceIP().toString());
-    connect(unitHVAC->getThermostat(),&::Thermostat::temperatureReadingChanged,this,&HVACWidget::onTemperatureChange);
-    connect(this,&HVACWidget::sendTemperature,unitHVAC->getThermostat(),&Thermostat::setTemperatureSetting);
+    connect(unitHVAC->getThermostat(), &Thermostat::temperatureReadingChanged, this, &HVACWidget::onTemperatureChange);
+    connect(this, &HVACWidget::sendTemperature, unitHVAC->getThermostat(), &Thermostat::setTemperatureSetting);
     listHVACdevices();
     updateUI();
     ui->newDeviceNameLiEd->setPlaceholderText("Kitchen device");
 
+    // Validators
     QString ipRange = R"((?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]))";
     QRegularExpression ipRegex ("^" + ipRange + "(\\." + ipRange + ")" + "(\\." + ipRange + ")" + "(\\." + ipRange + ")$");
-    QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex,this);
+    QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex, this);
     ui->newDeviceIpLiEd->setValidator(ipValidator);
     ui->newDeviceIpLiEd->setPlaceholderText("192.168.1.2");
     ui->addHVACdeviceButton->hide();
@@ -31,13 +33,17 @@ void HVACWidget::updateUI() {
                                        .arg(m_unitHVAC()->getStatus() == DeviceStatus::ON ? "ON" : "OFF"));
     ui->temperatureLabel->setText(QString::number(m_unitHVAC()->getThermostat()->getTemperatureReading())+ "°C");
 }
+
 void HVACWidget::onTemperatureChange(){
     updateUI();
 }
+
 void HVACWidget::on_setTemperatureButton_clicked()
 {
     emit sendTemperature(ui->setTemperatureBox->value());
+    sendTemperatureToServer();  // Wysyłanie do serwera
 }
+
 
 void HVACWidget::listHVACdevices(){
     QListWidgetItem *HVACdevice = new QListWidgetItem;
@@ -57,20 +63,46 @@ void HVACWidget::listHVACdevices(){
 
 void HVACWidget::on_addHVACdeviceButton_clicked()
 {
-    QHostAddress address;
-    address.setAddress(ui->newDeviceIpLiEd->text());
+    // Pobieramy IP z interfejsu użytkownika
+    QHostAddress address(ui->newDeviceIpLiEd->text());
     QListWidgetItem *item = new QListWidgetItem;
-    if(ui->newDeviceTypeCoBox->currentIndex() == 0){
+
+    // Sprawdzamy typ urządzenia i tworzymy nowe urządzenie
+    if (ui->newDeviceTypeCoBox->currentIndex() == 0) {
         AC* newAC = new AC;
         newAC->setDeviceName(ui->newDeviceNameLiEd->text());
-        newAC->setDeviceIP(address);
+        newAC->setDeviceIP(address);  // Ustawiamy oryginalne IP
         m_unitHVAC()->addAC(newAC);
+
+        // Wysyłamy dane do serwera na lokalny adres 127.0.0.1, ale zachowujemy oryginalne IP
+        QString data = QString("%1;%2;%3;%4")
+                           .arg(newAC->getName())
+                           .arg(newAC->getDeviceIP().toString())  // IP urządzenia
+                           .arg("ON")  // Status urządzenia
+                           .arg("AC"); // Typ urządzenia
+
+        qDebug() << "Sending data to localhost:" << data;
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), newAC->getDeviceIP());  // Komenda wysyłana na localhost, ale IP urządzenia pozostaje
+
     } else {
         Heater* newHeater = new Heater;
         newHeater->setDeviceName(ui->newDeviceNameLiEd->text());
         newHeater->setDeviceIP(address);
         m_unitHVAC()->addHeater(newHeater);
+
+        // Wysyłamy dane o urządzeniu do serwera na localhost (127.0.0.1)
+        QString data = QString("%1;%2;%3;%4")
+                           .arg(newHeater->getName())
+                           .arg(newHeater->getDeviceIP().toString())
+                           .arg("ON")  // Status - domyślnie "ON"
+                           .arg("Heater"); // Typ urządzenia - "Heater"
+
+        // Debugowanie wysyłania
+        qDebug() << "Sending data to server:" << data;
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), address);
     }
+
+    // Dodanie urządzenia do listy w GUI
     item->setText(ui->newDeviceNameLiEd->text());
     ui->devicesHVAClistWidget->addItem(item);
     ui->devicesHVAClistWidget->update();
@@ -78,6 +110,8 @@ void HVACWidget::on_addHVACdeviceButton_clicked()
     ui->newDeviceIpLiEd->clear();
     ui->addHVACdeviceButton->hide();
 }
+
+
 
 Device* HVACWidget::searchDevice(QString deviceName){
     Device *selectedDevice = nullptr;
@@ -109,9 +143,10 @@ void HVACWidget::on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item)
         ui->deviceNameFromListLabel->setText(device->getName());
         ui->deviceIpFromListLabel->setText(device->getDeviceIP().toString());
         ui->deviceStatusFromListLabel->setText(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF");
+        sendDeviceStatusToServer();  // Wysyłanie do serwera
     }
-
 }
+
 
 void HVACWidget::newDeviceNameAndIpOK(){
     Device* device = nullptr;
@@ -141,15 +176,52 @@ bool HVACWidget::checkIfIpNotInUse(QHostAddress address){
     if(address == m_unitHVAC()->getThermostat()->getDeviceIP()) {
         return false;
     }
-        for (AC* device : m_unitHVAC()->getDevicesAC()) {
-            if (device->getDeviceIP() == address) {
-                return false;
-            }
+    for (AC* device : m_unitHVAC()->getDevicesAC()) {
+        if (device->getDeviceIP() == address) {
+            return false;
         }
-        for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
-            if (device->getDeviceIP() == address) {
-                return false;
-            }
+    }
+    for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
+        if (device->getDeviceIP() == address) {
+            return false;
         }
+    }
     return true;
+}
+
+void HVACWidget::sendTemperatureToServer()
+{
+    QString data = QString("%1;%2")
+    .arg(m_unitHVAC()->getThermostat()->getTemperatureSetting())
+        .arg(m_unitHVAC()->getThermostat()->getTemperatureReading());
+
+    // Używamy NetworkHandler do wysłania danych
+    NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), QHostAddress("127.0.0.1"));
+}
+
+void HVACWidget::sendDeviceStatusToServer()
+{
+    // Wysyłanie statusu dla urządzeń AC
+    for (AC* device : m_unitHVAC()->getDevicesAC()) {
+        QString data = QString("%1;%2;%3;%4")
+        .arg(device->getName())
+            .arg(device->getDeviceIP().toString())
+            .arg(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF")
+            .arg("AC");
+
+        // Wysyłanie statusu urządzenia AC do serwera
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), device->getDeviceIP());
+    }
+
+    // Wysyłanie statusu dla urządzeń Heater
+    for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
+        QString data = QString("%1;%2;%3;%4")
+        .arg(device->getName())
+            .arg(device->getDeviceIP().toString())
+            .arg(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF")
+            .arg("Heater");
+
+        // Wysyłanie statusu urządzenia Heater do serwera
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), device->getDeviceIP());
+    }
 }

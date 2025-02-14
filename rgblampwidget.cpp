@@ -57,7 +57,6 @@ void RGBLampWidget::on_colorPickerButton_clicked()
         m_lamp()->sendCommand();
         updateUI();
     }
-
 }
 
 
