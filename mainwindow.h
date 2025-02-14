@@ -60,6 +60,8 @@ private slots:
     void on_addDeviceButton_clicked();
     void addDeviceCard(Device* device);
 
+    void on_miasctoCoBox_currentIndexChanged(int index);
+
 signals:
     void newDeviceNameOK();
     void newDeviceIpOK();

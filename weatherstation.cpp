@@ -45,10 +45,10 @@ void WeatherStation::fetchWeatherData(){
     isRequestInProgress = true;  // Mark that the request is in progress
 
     QString apiKey = "d1ae366f3a0eff9cf7500da05d365082"; // tu jest moj api key
-    QString city = "Katowice";
+    //QString city = "Katowice";
     //Construct the API URL
     QString url = QString("http://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
-                          .arg(city)
+                          .arg(miasto)
                           .arg(apiKey);
 
     qDebug() << "Constructed URL:" << url; // Debug output to verify the URL
@@ -124,3 +124,8 @@ void WeatherStation::fetchWeatherIcon(const QString &iconCode){
     });
 }
 
+void WeatherStation::setMiasto(QString m){
+    miasto = m;
+    qDebug() << "Miasto";
+    fetchWeatherData();
+}

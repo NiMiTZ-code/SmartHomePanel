@@ -20,6 +20,7 @@ class WeatherStation : public Sensor
     Q_OBJECT
 public:
     explicit WeatherStation(QObject *parent = nullptr);
+    void setMiasto(QString miasto);
 
 public slots:
     void readValue() override;
@@ -40,6 +41,7 @@ private:
     void fetchWeatherData();
     void fetchWeatherIcon(const QString &iconCode);
     bool isRequestInProgress;
+    QString miasto = "Katowice";
 
 
 signals:

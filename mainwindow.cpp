@@ -302,3 +302,9 @@ void MainWindow::on_hvacWidgetCreation(){
     qDebug() <<"WWWWWWW mainie info o utowrzeniu widgeta";
     emit hvacWidgetCreation();
 }
+
+void MainWindow::on_miasctoCoBox_currentIndexChanged(int index)
+{
+    weatherStation->setMiasto(ui->miasctoCoBox->itemText(index));
+}
+

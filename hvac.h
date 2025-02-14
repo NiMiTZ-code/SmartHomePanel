@@ -12,7 +12,6 @@ class HVAC : public Device
     Q_OBJECT
 public:
     explicit HVAC(Thermostat *thermostat,QObject *parent = nullptr);
-
     void addAC(AC* ac);
     void addHeater(Heater* heater);
     Thermostat *getThermostat(){return thermostat;}
@@ -23,9 +22,6 @@ private:
     Thermostat* thermostat;
     QList<AC*> devicesAC;
     QList<Heater*> devicesHeater;
-
-public slots:
-
 
 signals:
     void turnACs_ON();
