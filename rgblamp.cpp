@@ -20,6 +20,7 @@ void RGBLamp::mixColors(uint8_t R, uint8_t G, uint8_t B)
     QColor tempColor = QColor(R,G,B);
     if(tempColor.isValid()){
         m_mixedColor = tempColor;
+        qDebug() << tempColor.red();
     }
     //else throw an error or something
 }
