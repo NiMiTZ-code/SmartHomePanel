@@ -9,27 +9,6 @@
 #include "thermostat.h"
 #include "hvac.h"
 #include "hvacwidget.h"
-//#include "device.h"
-
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow), weatherStation(new WeatherStation(this)), currentDevice(nullptr)
-{
-    ui->setupUi(this);
-    // Timer to update the time every second
-    clockTimer = new QTimer(this);
-    connect(clockTimer, &QTimer::timeout, this, &MainWindow::setTime);
-    clockTimer->start(1000);
-
-    // Timer to update the weather every 60 seconds (1 minute)
-    weatherTimer = new QTimer(this);
-    connect(weatherTimer, &QTimer::timeout, this, &MainWindow::updateWeatherData);
-    weatherTimer->start(300000);  // Refresh weather every 5 minutes 300000
-
-    connect(weatherStation, &WeatherStation::weatherUpdated, this, &MainWindow::setWeatherData);
-
-}
 
 MainWindow::MainWindow(NetworkHandler *networkhandler, QWidget *parent)
     : QMainWindow(parent)
