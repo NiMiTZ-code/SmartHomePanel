@@ -26,6 +26,9 @@ public:
     float getTemperatureSetting(){
         return temperatureSetting;
     }
+
+    float getLowest_temp(){ return LOWEST_TEMP; }
+    float getHighest_temp(){ return HIGHEST_TEMP; }
     void chngTempSetting();
 
     void sendCommand() override;

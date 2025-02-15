@@ -30,6 +30,8 @@ private:
     bool checkIfIpNotInUse(QHostAddress address);
     bool hvacDeviceNameOK = false;
     bool hvacDeviceIpOK = false;
+    void sendTemperatureToServer();
+    void sendDeviceStatusToServer();
 public slots:
     void onTemperatureChange();
     void on_hvacDeviceNameOK();

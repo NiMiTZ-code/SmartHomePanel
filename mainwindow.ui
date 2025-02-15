@@ -103,9 +103,15 @@
         </item>
         <item>
          <widget class="QFrame" name="Pogoda">
-          <property name="maximumSize">
+          <property name="minimumSize">
            <size>
             <width>600</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
             <height>200</height>
            </size>
           </property>

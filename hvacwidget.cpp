@@ -1,5 +1,6 @@
 #include "hvacwidget.h"
 #include "ui_hvacwidget.h"
+#include "networkhandler.h"
 
 HVACWidget::HVACWidget(HVAC* unitHVAC, QWidget *parent)
     : DeviceWidget(unitHVAC,parent), ui(new Ui::HVACWidget)
@@ -37,7 +38,12 @@ void HVACWidget::onTemperatureChange(){
 }
 void HVACWidget::on_setTemperatureButton_clicked()
 {
-    emit sendTemperature(ui->setTemperatureBox->value());
+    double tempVal = ui->setTemperatureBox->value();
+    emit sendTemperature(tempVal);
+    if(m_unitHVAC()->getThermostat()->getHighest_temp() > tempVal && m_unitHVAC()->getThermostat()->getLowest_temp() < tempVal){
+        sendTemperatureToServer();
+        sendDeviceStatusToServer();
+    }
 }
 
 void HVACWidget::listHVACdevices(){
@@ -58,20 +64,41 @@ void HVACWidget::listHVACdevices(){
 
 void HVACWidget::on_addHVACdeviceButton_clicked()
 {
-    QHostAddress address;
-    address.setAddress(ui->newDeviceIpLiEd->text());
+    QHostAddress address(ui->newDeviceIpLiEd->text());
     QListWidgetItem *item = new QListWidgetItem;
-    if(ui->newDeviceTypeCoBox->currentIndex() == 0){
+
+    if (ui->newDeviceTypeCoBox->currentIndex() == 0) {
         AC* newAC = new AC;
         newAC->setDeviceName(ui->newDeviceNameLiEd->text());
         newAC->setDeviceIP(address);
         m_unitHVAC()->addAC(newAC);
+
+        QString data = QString("%1;%2;%3;%4")
+                           .arg(newAC->getName())
+                           .arg(newAC->getDeviceIP().toString())
+                           .arg("ON")
+                           .arg("AC");
+
+        qDebug() << "Sending data to localhost:" << data;
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), newAC->getDeviceIP());
+
     } else {
         Heater* newHeater = new Heater;
         newHeater->setDeviceName(ui->newDeviceNameLiEd->text());
         newHeater->setDeviceIP(address);
         m_unitHVAC()->addHeater(newHeater);
+
+        QString data = QString("%1;%2;%3;%4")
+                           .arg(newHeater->getName())
+                           .arg(newHeater->getDeviceIP().toString())
+                           .arg("ON")
+                           .arg("Heater");
+
+        // Debugowanie wysyłania
+        qDebug() << "Sending data to server:" << data;
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), address);
     }
+
     item->setText(ui->newDeviceNameLiEd->text());
     ui->devicesHVAClistWidget->addItem(item);
     ui->devicesHVAClistWidget->update();
@@ -80,6 +107,7 @@ void HVACWidget::on_addHVACdeviceButton_clicked()
     ui->addHVACdeviceButton->hide();
     hvacDeviceNameOK = false;
     hvacDeviceIpOK = false;
+    sendDeviceStatusToServer();
 }
 
 Device* HVACWidget::searchDevice(QString deviceName){
@@ -114,7 +142,6 @@ void HVACWidget::on_devicesHVAClistWidget_itemClicked(QListWidgetItem *item)
         ui->deviceIpFromListLabel->setText(device->getDeviceIP().toString());
         ui->deviceStatusFromListLabel->setText(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF");
     }
-
 }
 
 void HVACWidget::newDeviceNameAndIpOK(){
@@ -179,5 +206,37 @@ void HVACWidget::on_checkIfIpNotInHVACDevices(QHostAddress *ip){
     qDebug() << notInUse;
     if(notInUse){
         emit ipNotInHVACDevices();
+    }
+}
+
+void HVACWidget::sendTemperatureToServer()
+{
+    QString data = QString("%1;%2")
+    .arg(m_unitHVAC()->getThermostat()->getTemperatureSetting())
+        .arg(m_unitHVAC()->getThermostat()->getTemperatureReading());
+
+    NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), QHostAddress("127.0.0.1"));
+}
+
+void HVACWidget::sendDeviceStatusToServer()
+{
+    for (AC* device : m_unitHVAC()->getDevicesAC()) {
+        QString data = QString("%1;%2;%3;%4")
+        .arg(device->getName())
+            .arg(device->getDeviceIP().toString())
+            .arg(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF")
+            .arg("AC");
+
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), QHostAddress("127.0.0.1"));
+    }
+
+    for (Heater* device : m_unitHVAC()->getDevicesHeater()) {
+        QString data = QString("%1;%2;%3;%4")
+        .arg(device->getName())
+            .arg(device->getDeviceIP().toString())
+            .arg(device->getStatus() == DeviceStatus::ON ? "ON" : "OFF")
+            .arg("Heater");
+
+        NetworkHandler::getInstance()->sendCommandToDevice(data.toUtf8(), QHostAddress("127.0.0.1"));
     }
 }
